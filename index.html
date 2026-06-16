@@ -1,0 +1,3141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Transport">
+<meta name="theme-color" content="#4f46e5">
+<meta name="description" content="Transport Business Manager - Trips, EMI, Expenses, Fleet">
+<link rel="manifest" id="pwa-manifest" href="">
+<script>
+// Inline manifest as blob URL (works on any hosting)
+(function() {
+  const manifest = {"name": "Transport Manager", "short_name": "Transport", "description": "Transport Business Manager - Trips, EMI, Expenses, Fleet", "start_url": "./transport_manager.html", "display": "standalone", "background_color": "#4f46e5", "theme_color": "#4f46e5", "orientation": "any", "icons": [{"src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAIAAADdvvtQAAAHGklEQVR42u3aWZLaWhZG4TumHMQN95kSoJZGsodUM6s5lECiUc3gXocz2Nv2OfvYCZiUYP3xPeRDPm1W6AHx1+Pf/wNO9hcnAAGBgEBAICCAgEBAICAQEEBAICAQEAgIICAQEEYd0NObRkS2WK1dE9v0zSZg5tGKxJaqzpXZ8jfbgMJjJ0rbXO1dC9vyzSFg5dGLylar/xMQAQ05oLeNiGyxWrsmtunbTcDMoxWJLVWdK7Plb7cBhcdOlLa52rsWtuXbQ8DKoxeVrVYEREAEREAEREAEREAEREAENLCA3jUissVq7ZrYpu82ATOPViS2VHWuzJa/2wYUHjtR2uZq71rYlu8OASuPXlS2WhEQAREQAREQAREQAREQARHQwAJ634jIFqu1a2Kbvt8EzDxakdhS1bkyW/5+G1B47ERpm6u9a2Fbvj8ErDx6UdlqRUAEREAEREAEREAEREAEREADC+hDIyJbrNauiW36YRMw82hFYktV58ps+YdtQOGxE6VtrvauhW354RCw8uhFZasVAREQAREQAREQAREQAREQAQ0soI+NiGyxWrsmtunHTcDMoxWJLVWdK7PlH7cBhcdOlLa52rsWtuXHQ8DKoxeVrVYEREAEREAEREAEREAEREAENLCAPjUissVq7ZrYpp82ATOPViS2VHWuzJZ/2gYUHjtR2uZq71rYlp8OASuPXlS2WhEQAREQAREQAREQAREQAV0zoH9GtVcK6LERkS1Wa9fENn3cBMw8WpHYUtW5Mlv+uA0ofjSygB57USsCIiACIiACIiACIiACIiACGlhAT42IbLFauya26dMmYObRisSWqs6V2fKnbUDxo5EF9NSLWhHQ8AL6z39fGQEREAEREAEREAEREAG9bkBRIyJbrNauiW0abQJmHq1IbKnqXJktj7YBxY9GFlDUi1q9RkD/sOAIiIAIiIAIiIAIiIAI6M4DihsRHZHIKAOKe1ErAiIgAiIgAmIEREAEREAENLCAJo2IjkhklAFNelErAiIgAiIgAmIEREAEREAENLCApo2IjkhklAFNe1ErAiIgAiIgAmIEREAEREAENLCAZo2IjkhklAHNelErAiIgAiIgAmIEREAEREAENLCAkkZERyQyyoCSXtSKgNjvjYAYATECIiACIiACulpAaSOiIz6MUQaU9qJWBMQIiBEQIyACIiACYgMLKGtEdMSHMcqAsl7UioAYATECOndNQ5d/9hS3FlDzq91VMVc4xY0E1Lx8d9vNZU/xSgHljYiOrnmyW23o+qeo8l7UajwBNeeNes48xYgDai63O0/nnFMQEAHdZUDNpUc9p51ilAE1f2bUc8IpXimgohGRLVZr8aJDPDw8vOj/Z0Wb2FLVuTJbXmwDCo+dKG1/9BSr4vCdXlS2Wo08oAff7jOgk09xpwE9/Gr3E9CZp7jNgM482e8cbiwBXeEUBERABPTbAT28ZLcd0KVOMeCAykZEtlitn10joLK1pKpzZba83AYUHjtRGq4RUHk46kVlqxUBEdDtBXSpk53c0HACutopeALxBOIJREAEREAEdNGA5o2IbLFaP7vG90Dz1pKqzpXZ8vk2oPDYidJwje+B5oejXlS2WhEQAd1kQOc39It3YXY9Qwvo/IZ+u557Cujct/E3FNC5b+PvOaDTfw90cwGd/nugWw3opQ29qJ5xBTR/YUOn1jPAgBaNiGyxWv/k8vUs2meJLVWdK7Pli21A4bETpW3+zeXrWRwcvahstRp8QJdtSOoZY0CXbWjpqYeACIiAXJNvzk5n8824A5ov9l+dn86z+wronIaO9dxIQOc0JPXcY0CnNfRdPbcT0GkNfV/PSAJaNiKyxWrtmvj88ljT5Wbm0YrElqrOldny5Tag8NiJ0jZXe9evu1kevFYevahstRptQM++VvLsuZif3ElAix99PYX8baVDQD8H5HWfAX2PgAiIgAiIgAiIgF4poFUjIlus1q6JbbraBMw8WpHYUtW5Mlu+2gYUHjtR2uZq71rYlqtDwMqjF5WtVgREQAREQAREQAREQAREQAQ0sICqRkS2WK1dE9u02gTMPFqR2FLVuTJbXm0DCo+dKG1ztXctbMvqELDy6EVlqxUBERABERABERABERABERABDSyguhGRLVZr18Q2rTcBM49WJLZUda7MltfbgMJjJ0rbXO1dC9uyPgSsPHpR2WpFQAREQAREQAREQAREQAREQAML6HMjIlus1q6Jbfp5EzDzaEViS1Xnymz5521A4bETpW2u9q6Fbfn5ELDy6EVlqxUBERABERABERABERABERABDSygL42IbLFauya26ZdNwMyjFYktVZ0rs+VftgGFx06Utrnauxa25ZdDwMqjF5WtVgREQAREQDcbEEBAICAQEAgIBMQVQEAgIBAQCAggIBAQCAgEBBAQ/qR/ATgoMewpA8jyAAAAAElFTkSuQmCC", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"}, {"src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAIAAAB7GkOtAAAVDklEQVR42u3dWY4jR5aG0VpTLKKhOZPzPElLqp31HprztINuQkQLKqXMRPe4JN3J8+N7FRQQzO/JeEn968t//Y8k6Q37l/8EkgQASRIAJEkAkCQBQJIEAEkSACRJAJAkAUCSBABJEgAkSQCQJAFAkgQASRIAJEkAkCQBQJIEAEkSACRJAJAkAUCSBABJEgAkSQCQJABIkgAgSQKAJAkAkiQASJIAIEkCgCQJAJIkAEiSACBJAoAkCQCSJABIkgAgSQKAJAkAkqQXAeDrd9eWqRpxNXOtitaKq/3dOrBOmTapunH1cm2L1o9r8N0usGGZ9qlGcY1zHYo2iWv63TGwWZlOqeZxLXKdLwEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABADQH4/toyVSOuZq5V0Vpxtb9fB9Yp0yZVN65erm3R+nENvt8FNizTPtUornGuQ9EmcU2/PwY2K9Mp1TyuRa7zJQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAagB+uLVM14mrmWhWtFVf7h3VgnTJtUnXj6uXaFq0f1+CHXWDDMu1TjeIa5zoUbRLX9IdjYLMynVLN41rkOl8CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAogH48doyVSOuZq5V0VpxtX9cB9Yp0yZVN65erm3R+nENftwFNizTPtUornGuQ9EmcU1/PAY2K9Mp1TyuRa7zJQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAagJ+uLVM14mrmWhWtFVf7p3VgnTJtUnXj6uXaFq0f1+CnXWDDMu1TjeIa5zoUbRLX9KdjYLMynVLN41rkOl8CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAogH4+doyVSOuZq5V0VpxtX9eB9Yp0yZVN65erm3R+nENft4FNizTPtUornGuQ9EmcU1/PgY2K9Mp1TyuRa7zJQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAagF+uLVM14mrmWhWtFVf7l3VgnTJtUnXj6uXaFq0f1+CXXWDDMu1TjeIa5zoUbRLX9JdjYLMynVLN41rkOl8CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADhAPyvvdYAUByAL9eWqRpxNXOtitaKq/1lHVinTJtU3bh6ubZF68c1+LILbHhzLuarAfDllGmR63wJAAAAAAAMAAAAAAAAYAAAAAAAAAADAAAAAAAAGAAAAAAAAMAAAAAAAAAABgAAAAAAADAAAAAAAACAAQAAAAAAAAwAAAAAAABgAAAAAAAAAAMAAAAAAAAYAAAAAAAAwAAAAAAAAAAGAAAAAAAAMABEA/D12jJVI65mrlXRWnG1v64D65Rpk6obVy/Xtmj9uAZfd4ENb87FfDUAvp4yLXKdLwEAAAAAgAEAAAAAAAAMAAAAAAAA8O3+/d+KDwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4J0AaFxbpmrE1cy1KlorrnZjHVinTJtU3bh6ubZF68c1aOwCG94cAF4NgMYp0yLX+RIAAAAAAAAAAAAAAAAAAAAAACCV/wGFvfMcawAAwAwAAgAAzAAgAADADAACAADMACAAAMAMAAIAAMwAIAAAwAwAAgAAzAAAAAAAwAwAAAAAAMwAAAAAAMAMAAAAAADMAAAAAHwOgOa1ZapGOifAAKAKAdA8ZVrkOl8CAADMAAAAAADADAAAAAAAzAAAAAAAwAwAAAAAAAwAAgAAzAAgAADADAACAADMACAAAMAMAAIAAMwAIAAAwAwAAgAAzAAgAADADAAAAAAAzAAAAAAAwAwAAABANACta8tUjXROgAFAFQKgdcq0yHW+BAAAmAEAAAAAgBkAAAAAAJgBAAAAAIAZAAAAAAAYAAQAAJgBQAAAgBkABAAAmAFAAACAGQAEAACYAUAAAIAZAAQAAJgBQAAAgBkAAAAAAJgBAAAAAIAZAAAAgGgA2teWqRrpnAADgCoEQPuUaZHrfAkAADADAAAAAAAzAAAAAAAwAwAAAAAAMwAAAAAAMAAIAAAwA4AAAAAzAAgAADADgAAAADMACAAAMAOAAAAAMwAIAAAwA4AAAAAzAAAAAAAwAwAAAAAAMwAAAADRAHSuLVM10jkBBgBVCIDOKdMi1/kSAABgBgAAAAAAZgAAAAAAYAYAAAAAAGYAAAAAAGAAEAAAYAYAAQAAZgAQAABgBgABAABmABAAAGAGAAEAAGYAEAAAYAYAAQAAZgAAAAAAYAYAAAAAAGYAAAAAogHoXlumaqRzAgwAqhAA3VOmRa7zJQAAwMzqOgAAwMwAAAAAmBkAAAAAMwMAAABgZgAAAADMDAAAAICZAQAAADAzAAAAAGYGAAAAwMwAAAAAmBkAAGBmBgAAmJkBAABmZgAAgJkZAKoLQO/aMlUjnQdnZhUCoHfKtMh1vgQAAJgZAAAAADMDAAAAYGYAAAAAzAwAAACAmQEAAGZmAACAmRkAAGBmBgAAmJkBAABmZgAAgJkZAABgZgYAAJiZAQAAZmYAAICZGQCiAehfW6ZqpPPgzKxCAPRPmRa5zpcAAAAzAwAAAGBmAAAAAMwMAAAAgJkBAAAAMDMAAMDMDAAAMDMDAADMzAAAgFpvuUSdecAAAMDrArAsO/fFPGAAAOCNvhkYmAcMAAD4bEhgHjAAAODLwYB5wAAAgC8HA+YBAwAAb/3lYMA8YABUG4DBtWWqRjpfDgbMA64QAINTpkWu8yUAvA4Ay6rOXTMPGAAAeLsvBwPmAQMAAO/+8TDAPGAAAOB9Px4GmAcMAAC878fDAPOAAQCAN/1yMGAeMAAA8O4fDwNcfw8YAADw/RgAPGAAAODNPh4GuP4eMAAA8L4fDwNcfw8YAAB434+HAa6/BwwAALzvx8MA198DBgAAfD8GAA8YABUGoGjNXKsbW77HOoPNtW5cvVzbovXjGgx2gQ3LtE81imv8e2/ygGeDY5FOqeZxAaD2ACzfaQB4PQDe6gEDoA4ADK8tUzXiauZa3dJT3vHHx8dzABhuLnXj6uXaFq0f12C4C2xYpn2qUVzj4f6tHvBseLy5U6p5XItc50sAqDQAD/tabtnDDADAywDwhg8YAACoBwAfZQcAAFQBgGo+YAAAIAaACn45j/mKAPAaALztAwYAAKoLwEfcAACAxwNQ/QcMAAB8FoCKfzn3/ooAUHcA3vwBAwAA1QLg454DAADuDUC9HjAAAFAegHp9PFU2AABPAcADvsEAAADgIQB8PGoAAMA9AKjpAwYAAJ4PwMdjBwAAxAJQ3wcMAACUAaCmf3qq5i8BAHg8AB7wbQYAAACv9cf/Cv4SAIBaA1D3BwwAADwNgI/nDQAA8IABAAAAAAAAAAAAAG4D4AU+nkoZAIAHA+AB32wAAAAAAAAAAAAAeCgAo2vLVI24mrlW3+b7+SsAo81n6uXaFq0f12C0C2xYpn2q0SfygP8KwOiY6JRqHtci1/kSAF4QgI9qDAAA8IABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADfDwAAAAAAvCEAr/TxVMQAADwSAA+4iAEAAIDfAPwG4DcAvwEAAAAAAAAAAAAAAPh+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIC/DRQA/jZQfxsoAAAAAAAAAAAA+CcAxteWqRpxNXOtvs3381cAxpvP1Mu1LVo/rsF4F9iwTPtUo0/kAf8VgPEx0SnVPK5FrvMlAFQLgNcwoCLXHwCPB+A1DLj/9QcAAAAAAAAAAAAAuAcAz/qEAn9+ALwzAC/wgAEAgGcC8PhPKPaHB8CbA1D3BwwAABQGoNa/BFTq+gPgKQDU+peAR11/AADgIQA88hOq2h//AfACANT3AQMAAJUA4DGfUPjPDAAA1PoBAwAAJQGonQHVvP4AeBYAtTPg4dcfAAB4LAD3+4Tu8aMCAAC1fsAAAMCnALiTAbFf0Z1+wqjrD4AnAnAnA2rxgG+4/gAAwJMAiPqE7vfjAQAAtX7AAABAAAB3NeAzX9Fdf6pO3PUHwHMBuKsBlX3At11/AADg2QAU/ZAe88MAAAC1fsAAAEAYAA8z4Nsv6in/3sv1B8ArATB+lAEVecA3X38AAKDCADxrAABArQeAOgAwubZM1YirmWt1Y+9y/Seba924erm2RevHNZjsAhuWaZ9qFNf4997l+k+ORTqlmse1yHW+BIAaAPAOBvxx/QHwegC8gwEFrz8AAAAAAAAAAAAAwJsb8OfrD4CXBOC1DSh+/QEAgIIAvKoBf7n+AHhVAF7VgGmZ6w8AABQHoPVyBnx7/QHwwgC8ngGX6w8AADwOgFcy4G+vPwBeG4BXMuB6/QEAAAAAAAAAAAAA7g/AaxiQuv4AeHkAXsOAP64/AADwaABqzUBnsv49ALwvAL93eIHTDwAAPA2AOhrw/9cfAAA41NGAb68/AADwNADqZcCfrj8AAHConQF/e/0BAIBnAlAXA/7z+gMAAId6GZC6/gAAwJMBqDgD35x+AADgPwCoOAOZ0w8AAFQFgGoakLj+AADAoRYG/OP1BwAAqgJApRhIn34AAODvAagUA7ecfgDUEIDptWWqRlzNXKuitYr0zNM/Xd/QJlU3rl6ubdH6cQ2mu8CGZdqnGsU1znXI98zTPz0WalamU6p5XItc50sAeFkAnsLAbacfAAD4ZwCewkDR0w8AAFQagIcxUOT0AwAAtwLwMAbKnX4AAKAGANxPgvZ03S58+gEAgGIAXJvcQYLP3H0AAKBmAPzR5Wp/8uj/OQAA4DEA/LnSD/jyz4bcfQAAoMYAZPrbK58JAAB4PACZrlc+EwAAAICwAACASgHwjwEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICqAjC7tkzViKuZa1W0Vlzt2TqwTpk2qbpx9XJti9aPazDbBTYs0z7VKK5xrkPRJnFNZ8fAZmU6pZrHtch1vgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEAzC/tkzViKuZa1W0Vlzt+TqwTpk2qbpx9XJti9aPazDfBTYs0z7VKK5xrkPRJnFN58fAZmU6pZrHtch1vgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEA7C4tkzViKuZa1W0VlztxTqwTpk2qbpx9XJti9aPa7DYBTYs0z7VKK5xrkPRJnFNF8fAZmU6pZrHtch1vgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEA/DrtWWqRlzNXKuiteJq/7oOrFOmTapuXL1c26L14xr8ugtsWKZ9qlFc41yHok3imv56DGxWplOqeVyLXOdLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQDQAv11bpmrE1cy1KlorrvZv68A6Zdqk6sbVy7UtWj+uwW+7wIZl2qcaxTXOdSjaJK7pb8fAZmU6pZrHtch1vgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADUBABJ0hMDgCQBQJIEAEkSACRJAJAkAUCSBABJEgAkSQCQJAFAkgQASRIAJEkAkCQBQJIEAEkSACRJAJAkAUCSBABJEgAkSQCQJAFAkgQASRIAJAkAkiQASJIAIEkCgCQJAJIkAEiSACBJAoAkCQCSJABIkgAgSQKAJAkAkiQASJIAIEm6U/8H+vFCTgIqqwAAAAAASUVORK5CYII=", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}], "categories": ["business", "finance", "productivity"], "screenshots": [], "lang": "hi", "dir": "ltr"};
+  const blob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  document.getElementById('pwa-manifest').href = url;
+})();
+</script>
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAIAAADdvvtQAAAHGklEQVR42u3aWZLaWhZG4TumHMQN95kSoJZGsodUM6s5lECiUc3gXocz2Nv2OfvYCZiUYP3xPeRDPm1W6AHx1+Pf/wNO9hcnAAGBgEBAICCAgEBAICAQEEBAICAQEAgIICAQEEYd0NObRkS2WK1dE9v0zSZg5tGKxJaqzpXZ8jfbgMJjJ0rbXO1dC9vyzSFg5dGLylar/xMQAQ05oLeNiGyxWrsmtunbTcDMoxWJLVWdK7Plb7cBhcdOlLa52rsWtuXbQ8DKoxeVrVYEREAEREAEREAEREAEREAENLCA3jUissVq7ZrYpu82ATOPViS2VHWuzJa/2wYUHjtR2uZq71rYlu8OASuPXlS2WhEQAREQAREQAREQAREQARHQwAJ634jIFqu1a2Kbvt8EzDxakdhS1bkyW/5+G1B47ERpm6u9a2Fbvj8ErDx6UdlqRUAEREAEREAEREAEREAEREADC+hDIyJbrNauiW36YRMw82hFYktV58ps+YdtQOGxE6VtrvauhW354RCw8uhFZasVAREQAREQAREQAREQAREQAQ0soI+NiGyxWrsmtunHTcDMoxWJLVWdK7PlH7cBhcdOlLa52rsWtuXHQ8DKoxeVrVYEREAEREAEREAEREAEREAENLCAPjUissVq7ZrYpp82ATOPViS2VHWuzJZ/2gYUHjtR2uZq71rYlp8OASuPXlS2WhEQAREQAREQAREQAREQAV0zoH9GtVcK6LERkS1Wa9fENn3cBMw8WpHYUtW5Mlv+uA0ofjSygB57USsCIiACIiACIiACIiACIiACGlhAT42IbLFauya26dMmYObRisSWqs6V2fKnbUDxo5EF9NSLWhHQ8AL6z39fGQEREAEREAEREAEREAG9bkBRIyJbrNauiW0abQJmHq1IbKnqXJktj7YBxY9GFlDUi1q9RkD/sOAIiIAIiIAIiIAIiIAI6M4DihsRHZHIKAOKe1ErAiIgAiIgAmIEREAEREAENLCAJo2IjkhklAFNelErAiIgAiIgAmIEREAEREAENLCApo2IjkhklAFNe1ErAiIgAiIgAmIEREAEREAENLCAZo2IjkhklAHNelErAiIgAiIgAmIEREAEREAENLCAkkZERyQyyoCSXtSKgNjvjYAYATECIiACIiACulpAaSOiIz6MUQaU9qJWBMQIiBEQIyACIiACYgMLKGtEdMSHMcqAsl7UioAYATECOndNQ5d/9hS3FlDzq91VMVc4xY0E1Lx8d9vNZU/xSgHljYiOrnmyW23o+qeo8l7UajwBNeeNes48xYgDai63O0/nnFMQEAHdZUDNpUc9p51ilAE1f2bUc8IpXimgohGRLVZr8aJDPDw8vOj/Z0Wb2FLVuTJbXmwDCo+dKG1/9BSr4vCdXlS2Wo08oAff7jOgk09xpwE9/Gr3E9CZp7jNgM482e8cbiwBXeEUBERABPTbAT28ZLcd0KVOMeCAykZEtlitn10joLK1pKpzZba83AYUHjtRGq4RUHk46kVlqxUBEdDtBXSpk53c0HACutopeALxBOIJREAEREAEdNGA5o2IbLFaP7vG90Dz1pKqzpXZ8vk2oPDYidJwje+B5oejXlS2WhEQAd1kQOc39It3YXY9Qwvo/IZ+u557Cujct/E3FNC5b+PvOaDTfw90cwGd/nugWw3opQ29qJ5xBTR/YUOn1jPAgBaNiGyxWv/k8vUs2meJLVWdK7Pli21A4bETpW3+zeXrWRwcvahstRp8QJdtSOoZY0CXbWjpqYeACIiAXJNvzk5n8824A5ov9l+dn86z+wronIaO9dxIQOc0JPXcY0CnNfRdPbcT0GkNfV/PSAJaNiKyxWrtmvj88ljT5Wbm0YrElqrOldny5Tag8NiJ0jZXe9evu1kevFYevahstRptQM++VvLsuZif3ElAix99PYX8baVDQD8H5HWfAX2PgAiIgAiIgAiIgF4poFUjIlus1q6JbbraBMw8WpHYUtW5Mlu+2gYUHjtR2uZq71rYlqtDwMqjF5WtVgREQAREQAREQAREQAREQAQ0sICqRkS2WK1dE9u02gTMPFqR2FLVuTJbXm0DCo+dKG1ztXctbMvqELDy6EVlqxUBERABERABERABERABERABDSyguhGRLVZr18Q2rTcBM49WJLZUda7MltfbgMJjJ0rbXO1dC9uyPgSsPHpR2WpFQAREQAREQAREQAREQAREQAML6HMjIlus1q6Jbfp5EzDzaEViS1Xnymz5521A4bETpW2u9q6Fbfn5ELDy6EVlqxUBERABERABERABERABERABDSygL42IbLFauya26ZdNwMyjFYktVZ0rs+VftgGFx06Utrnauxa25ZdDwMqjF5WtVgREQAREQDcbEEBAICAQEAgIBMQVQEAgIBAQCAggIBAQCAgEBBAQ/qR/ATgoMewpA8jyAAAAAElFTkSuQmCC">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png">
+<title>🚛 Transport Manager</title>
+<style>
+/* ==================== SETUP SCREEN ==================== */
+#setup-screen {
+  position: fixed; inset: 0; background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  display: none; align-items: center; justify-content: center; z-index: 9999;
+  font-family: 'Segoe UI', sans-serif;
+}
+.setup-box {
+  background: white; border-radius: 20px; padding: 40px; width: 90%; max-width: 500px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.setup-box h1 { font-size: 24px; color: #4f46e5; margin-bottom: 8px; }
+.setup-box p { color: #6b7280; font-size: 14px; margin-bottom: 24px; line-height: 1.6; }
+.setup-input { width: 100%; padding: 12px 14px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 14px; outline: none; margin-bottom: 12px; box-sizing: border-box; }
+.setup-input:focus { border-color: #4f46e5; }
+.setup-btn { width: 100%; padding: 12px; background: #4f46e5; color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; }
+.setup-btn:hover { background: #3730a3; }
+.setup-step { background: #f3f4f6; border-radius: 10px; padding: 14px; margin-bottom: 12px; font-size: 13px; line-height: 1.8; }
+.setup-step b { color: #4f46e5; }
+
+/* ==================== MAIN APP ==================== */
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-box-sizing: border-box; }
+body { font-family: -apple-system, 'Segoe UI', sans-serif; background: #f0f2f8; color: #1a1d2e; display: block; -webkit-font-smoothing: antialiased; }
+body.ready { display: block; }
+
+.app { display: flex; height: 100vh; height: 100dvh; overflow: hidden; }
+
+/* SIDEBAR */
+.sidebar { width: 165px; background: white; border-right: 1px solid #e5e7eb; display: flex; flex-direction: column; flex-shrink: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.sidebar-logo { padding: 14px 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e5e7eb; font-weight: 800; font-size: 13px; color: #4f46e5; }
+.logo-icon { width: 28px; height: 28px; background: #4f46e5; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 12px 16px; font-size: 13px; font-weight: 600; color: #4b5563; cursor: pointer; border-left: 3px solid transparent; user-select: none; -webkit-tap-highlight-color: transparent; }
+.nav-item:hover { background: #f3f4f6; color: #4f46e5; }
+.nav-item.active { background: #ede9fe; color: #4f46e5; border-left-color: #4f46e5; }
+.nav-item .ico { font-size: 18px; min-width: 22px; text-align: center; }
+
+/* MAIN */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.topbar { background: white; border-bottom: 1px solid #e5e7eb; padding: 0 20px; padding-left: calc(20px + env(safe-area-inset-left)); padding-right: calc(20px + env(safe-area-inset-right)); height: 54px; display: flex; align-items: center; justify-content: flex-end; gap: 12px; flex-shrink: 0; }
+.sync-badge { display: flex; align-items: center; gap: 5px; font-size: 12px; color: #10b981; font-weight: 600; }
+.sync-dot { width: 7px; height: 7px; background: #10b981; border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.4} }
+/* OFFLINE QUEUE BADGE */
+.offline-badge { display: none; align-items: center; gap: 5px; font-size: 12px; color: #f59e0b; font-weight: 700; background: #fef3c7; border: 1px solid #fcd34d; border-radius: 20px; padding: 3px 10px; cursor: pointer; }
+.offline-badge.show { display: flex; }
+.offline-dot { width: 7px; height: 7px; background: #f59e0b; border-radius: 50%; animation: pulse 1s infinite; }
+/* OFFLINE QUEUE MODAL */
+#offline-queue-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9998; align-items:center; justify-content:center; padding:20px; }
+#offline-queue-modal.show { display:flex; }
+.oq-box { background:white; border-radius:16px; padding:24px; width:100%; max-width:480px; max-height:80vh; overflow-y:auto; }
+.oq-box h2 { font-size:18px; font-weight:800; color:#4f46e5; margin-bottom:6px; }
+.oq-box p { font-size:13px; color:#6b7280; margin-bottom:16px; }
+.oq-item { background:#f9fafb; border:1px solid #e5e7eb; border-radius:10px; padding:12px; margin-bottom:10px; font-size:13px; }
+.oq-item .oq-type { font-weight:700; color:#4f46e5; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; }
+.oq-item .oq-detail { color:#374151; }
+.oq-item .oq-time { color:#9ca3af; font-size:11px; margin-top:4px; }
+.oq-item.failed { border-color:#fca5a5; background:#fef2f2; }
+.oq-item.failed .oq-type { color:#dc2626; }
+.oq-actions { display:flex; gap:8px; margin-top:16px; flex-wrap:wrap; }
+.oq-empty { text-align:center; color:#6b7280; padding:30px; font-size:14px; }
+.user-info { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; }
+.avatar { width: 30px; height: 30px; background: #4f46e5; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 13px; font-weight: 800; }
+.admin-tag { background: #dbeafe; color: #1d4ed8; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+
+/* CONTENT */
+.content { flex: 1; overflow-y: auto; padding: 20px; -webkit-overflow-scrolling: touch; padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
+.page { display: none; }
+.page.active { display: block; }
+.page-title { font-size: 21px; font-weight: 800; margin-bottom: 4px; }
+.page-sub { font-size: 12px; color: #6b7280; margin-bottom: 18px; }
+
+/* CARDS */
+.card { background: white; border-radius: 12px; border: 1px solid #e5e7eb; padding: 18px; margin-bottom: 16px; }
+.card-title { font-size: 14px; font-weight: 700; margin-bottom: 14px; }
+
+/* SYNC BANNER */
+.sync-banner { background: linear-gradient(135deg, #4f46e5, #7c3aed); border-radius: 12px; padding: 14px 18px; color: white; margin-bottom: 16px; display: flex; gap: 0; flex-wrap: wrap; }
+.sbi { flex: 1; min-width: 120px; }
+.sbl { font-size: 9px; font-weight: 600; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.5px; }
+.sbv { font-size: 13px; font-weight: 700; margin-top: 3px; }
+.cd-badge { background: rgba(255,255,255,0.2); border-radius: 5px; padding: 2px 8px; font-size: 12px; font-weight: 700; display: inline-block; margin-top: 3px; }
+
+/* STATS */
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+.stat-card { background: white; border-radius: 10px; border: 1px solid #e5e7eb; padding: 12px; }
+.stat-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #6b7280; margin-bottom: 5px; }
+.stat-value { font-size: 16px; font-weight: 800; font-family: 'Courier New', monospace; }
+.stat-sub { font-size: 10px; color: #6b7280; margin-top: 2px; }
+@media(min-width:900px) { .stats-grid { grid-template-columns: repeat(8,1fr); } }
+
+/* FORM */
+.form-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.fg { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 110px; }
+.fl { font-size: 10px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: 0.3px; }
+.fi { padding: 7px 9px; border: 1px solid #e5e7eb; border-radius: 7px; font-size: 16px; font-family: -apple-system, 'Segoe UI', sans-serif; outline: none; width: 100%; -webkit-appearance: none; appearance: none; }
+.fi:focus { border-color: #4f46e5; box-shadow: 0 0 0 2px rgba(79,70,229,0.1); }
+select.fi { font-size: 16px; } /* Prevent iOS zoom */
+.fi.auto { background: #fef9c3; }
+.fi.margin { background: #f0fdf4; }
+.fi.pending-field { background: #fefce8; }
+textarea.fi { resize: vertical; min-height: 60px; }
+
+/* BUTTONS */
+.btn { display: inline-flex; align-items: center; gap: 5px; padding: 10px 16px; border-radius: 7px; font-size: 13px; font-weight: 700; cursor: pointer; border: none; font-family: -apple-system, 'Segoe UI', sans-serif; transition: all 0.15s; -webkit-tap-highlight-color: transparent; min-height: 44px; touch-action: manipulation; }
+.btn-primary { background: #4f46e5; color: white; }
+.btn-primary:hover { background: #3730a3; }
+.btn-secondary { background: #f3f4f6; color: #374151; border: 1px solid #e5e7eb; }
+.btn-success { background: #10b981; color: white; }
+.btn-danger { background: #ef4444; color: white; }
+.btn-sm { padding: 5px 10px; font-size: 12px; border-radius: 6px; }
+.btns-row { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+
+/* TABLE */
+.tbl-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th { background: #f9fafb; padding: 8px 10px; text-align: left; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: #6b7280; border-bottom: 1px solid #e5e7eb; white-space: nowrap; }
+td { padding: 8px 10px; border-bottom: 1px solid #f3f4f6; vertical-align: middle; }
+tr:hover td { background: #f9fafb; }
+tr:last-child td { border-bottom: none; }
+
+/* TAGS */
+.tag { display: inline-block; padding: 2px 7px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+.tag-blue { background: #dbeafe; color: #1e40af; }
+.tag-yellow { background: #fef3c7; color: #92400e; }
+.tag-green { background: #d1fae5; color: #065f46; }
+.tag-red { background: #fee2e2; color: #991b1b; }
+.tag-gray { background: #f3f4f6; color: #374151; }
+
+/* COLORS */
+.green { color: #10b981; font-weight: 700; }
+.red { color: #ef4444; font-weight: 700; }
+.amber { color: #f59e0b; font-weight: 700; }
+
+/* EMPTY */
+.empty { text-align: center; padding: 40px 20px; color: #9ca3af; }
+.empty .eico { font-size: 40px; margin-bottom: 8px; }
+.empty .etxt { font-size: 13px; font-weight: 600; }
+
+/* SECTION HEADER */
+.sec-hdr { font-size: 13px; font-weight: 700; padding: 10px 0 8px; border-bottom: 2px solid #e5e7eb; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+
+/* IMG */
+.img-thumb { width: 36px; height: 36px; object-fit: cover; border-radius: 5px; cursor: pointer; border: 1px solid #e5e7eb; }
+
+/* MODAL */
+.modal-ov { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1000; display: none; align-items: center; justify-content: center; }
+.modal-ov.open { display: flex; }
+.modal-ov img { max-width: 90vw; max-height: 90vh; border-radius: 12px; }
+
+/* LOADING */
+.loading-bar { position: fixed; top: 0; left: 0; right: 0; height: 3px; background: #4f46e5; transform: scaleX(0); transform-origin: left; transition: transform 0.3s; z-index: 9999; }
+.loading-bar.active { animation: loading-anim 1.5s infinite; }
+@keyframes loading-anim { 0%{transform:scaleX(0)}50%{transform:scaleX(0.7)}100%{transform:scaleX(1)} }
+
+/* TOAST */
+.toast { position: fixed; bottom: 20px; right: 20px; background: #1a1d2e; color: white; padding: 12px 20px; border-radius: 10px; font-size: 13px; font-weight: 600; z-index: 9999; transform: translateY(100px); transition: transform 0.3s; }
+.toast.show { transform: translateY(0); }
+.toast.ok { background: #10b981; }
+.toast.err { background: #ef4444; }
+
+/* MONTHLY REPORT GRID */
+.report-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media(min-width:900px) { .report-grid { grid-template-columns: auto 1fr 1fr 1fr; } }
+.rp-summary { background: white; border-radius: 10px; border: 1px solid #e5e7eb; padding: 16px; }
+.rp-big { font-size: 24px; font-weight: 800; }
+.rp-label { font-size: 10px; color: #6b7280; font-weight: 600; text-transform: uppercase; }
+
+/* CHARTS */
+.bar-chart { display: flex; gap: 6px; align-items: flex-end; height: 120px; padding: 4px 0; }
+
+/* ============================================================
+   MOBILE RESPONSIVE — iPhone / Android
+   ============================================================ */
+
+/* Mobile sidebar overlay */
+.sidebar-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.sidebar-overlay.open { 
+  opacity: 1; 
+  pointer-events: all; 
+}
+
+/* Hamburger menu button */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  margin-right: auto;
+}
+.hamburger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: #374151;
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+@media (max-width: 768px) {
+  /* App layout — no overflow:hidden so forms are accessible */
+  .app { flex-direction: column; height: 100vh; height: 100dvh; overflow: visible; }
+
+  /* Sidebar — hidden by default on mobile, slides in */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: 260px;
+    z-index: 999;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+  }
+  .sidebar.open { transform: translateX(0); }
+  
+  /* Bigger touch targets for nav on mobile */
+  .nav-item { padding: 14px 18px; font-size: 14px; }
+  .nav-item .ico { font-size: 20px; }
+
+  /* Main takes full width */
+  .main { width: 100%; height: 100vh; height: 100dvh; flex: 1; overflow: hidden; }
+
+  /* Topbar — compact for mobile */
+  .topbar {
+    padding: 0 12px;
+    height: 52px;
+    gap: 8px;
+    justify-content: flex-start;
+  }
+  .hamburger { display: flex; }
+  .admin-tag { display: none; }
+  .sync-badge span { display: none; }
+  .sync-badge { gap: 3px; }
+
+  /* Content padding — proper scroll on iPhone */
+  .content { 
+    padding: 12px; 
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    height: calc(100vh - 54px);
+    height: calc(100dvh - 54px);
+  }
+
+  /* Page title */
+  .page-title { font-size: 18px; }
+
+  /* Cards */
+  .card { padding: 14px; }
+
+  /* Form rows — stack on mobile, full width */
+  .form-row { flex-direction: column; gap: 10px; }
+  .fg { min-width: unset; width: 100%; flex: unset; }
+  .fi { min-height: 44px; font-size: 16px; padding: 10px 12px; }
+  .btn { min-height: 44px; width: 100%; justify-content: center; }
+  .btn-sm { min-height: 38px; width: auto; }
+  .btns-row .btn { width: auto; }
+
+  /* Stats grid — 2 columns on mobile */
+  .stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 8px; }
+  .stat-value { font-size: 14px; }
+
+  /* Sync banner — stack items */
+  .sync-banner { flex-direction: column; gap: 8px; padding: 12px; }
+  .sbi { min-width: unset; }
+
+  /* Tables — horizontal scroll */
+  .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { min-width: 500px; }
+  td, th { padding: 6px 8px; font-size: 11px; }
+
+  /* Buttons */
+  .btn { padding: 10px 14px; font-size: 13px; }
+  .btns-row { flex-wrap: wrap; }
+
+  /* Report grid */
+  .report-grid { grid-template-columns: 1fr !important; }
+
+  /* Loan cards grid */
+  [style*="grid-template-columns: repeat(3"] { grid-template-columns: 1fr 1fr !important; }
+  [style*="grid-template-columns: repeat(4"] { grid-template-columns: 1fr 1fr !important; }
+
+  /* Modal */
+  .modal-ov img { max-width: 95vw; max-height: 80vh; }
+
+  /* Toast */
+  .toast { left: 12px; right: 12px; bottom: 12px; }
+
+  /* Loan form — EMI Due Day inline */
+  #l-due { max-width: 100%; }
+
+  /* Setup box */
+  .setup-box { padding: 24px 16px; }
+}
+
+@media (max-width: 400px) {
+  .stats-grid { grid-template-columns: 1fr 1fr !important; }
+  .page-title { font-size: 16px; }
+  .content { padding: 10px; }
+  .card { padding: 12px; }
+}
+
+.bar-col { display: flex; flex-direction: column; align-items: center; flex: 1; height: 100%; justify-content: flex-end; gap: 3px; }
+.bar-rect { border-radius: 4px 4px 0 0; width: 100%; min-height: 2px; }
+.bar-lbl { font-size: 9px; color: #6b7280; font-weight: 600; text-align: center; }
+.bar-val { font-size: 8px; color: #6b7280; }
+
+/* Attractive 2-line table headers */
+table thead th { vertical-align: middle; line-height: 1.3; }
+table thead th br + span { display: block; margin-top: 1px; }
+table thead th:first-letter { text-transform: uppercase; }
+.col-sale { color: #2563eb !important; font-weight: 600 !important; }
+.col-pending { color: #dc2626 !important; font-weight: 600 !important; }
+.col-margin-pos { color: #16a34a !important; font-weight: 700 !important; }
+.col-margin-neg { color: #dc2626 !important; font-weight: 700 !important; }
+
+</style>
+</head>
+<body>
+
+<!-- SETUP SCREEN -->
+<div id="setup-screen">
+  <div class="setup-box">
+    <h1>🚛 Transport Manager</h1>
+    <p>Pehli baar setup karein. Sirf ek baar Google Sheets URL paste karein, phir automatically save ho jayega.</p>
+    
+    <div class="setup-step" id="setup-steps">
+      <b>Step 1:</b> <a href="https://sheets.google.com/create" target="_blank">sheets.google.com</a> pe naya spreadsheet banayein<br>
+      <b>Step 2:</b> Extensions → Apps Script → code paste karein → Deploy → Web App<br>
+      <b>Step 3:</b> "Anyone" access dein → Deploy karein → URL copy karein<br>
+      <b>Step 4:</b> Woh URL neeche paste karein ↓
+    </div>
+    <div style="background:#dbeafe;border-radius:8px;padding:10px;margin-bottom:12px;font-size:12px;color:#1e40af">
+      💡 <b>Tip:</b> Pehli baar URL dalne ke baad app automatically save kar legi — dobara nahi poochega
+    </div>
+
+    <input type="text" class="setup-input" id="api-url-input" placeholder="https://script.google.com/macros/s/.../exec" />
+    <input type="text" class="setup-input" id="user-name-input" placeholder="Aapka naam (e.g. Imran Khan)" value="Imran Khan" />
+    <button class="setup-btn" onclick="saveSetup()">✅ Setup Complete Karein</button>
+    <div id="pwa-mode-notice" style="display:none;margin-top:12px;background:#fef3c7;border-radius:8px;padding:10px;font-size:12px;color:#92400e">
+      📱 <b>Home Screen App:</b> Pehli baar URL dalni hogi. Yeh sirf ek baar hoga.
+    </div>
+    <p style="margin-top:10px;font-size:11px;color:#9ca3af;text-align:center">URL save hogi — dobara nahi daalni padegi</p>
+  </div>
+</div>
+
+<!-- LOADING BAR -->
+<div class="loading-bar" id="loading-bar"></div>
+
+<!-- OFFLINE QUEUE MODAL -->
+<div id="offline-queue-modal">
+  <div class="oq-box">
+    <h2>📦 Offline Queue</h2>
+    <p>Yeh entries internet nahi hone ki wajah se save nahi huyi. Internet aane pe automatically sync ho jayengi.</p>
+    <div id="oq-list"></div>
+    <div class="oq-actions">
+      <button class="btn btn-primary" onclick="syncOfflineQueue()" id="oq-sync-btn">🔄 Abhi Sync Karein</button>
+      <button class="btn btn-secondary" onclick="clearFailedQueue()" id="oq-clear-btn">🗑 Failed Clear Karein</button>
+      <button class="btn btn-secondary" onclick="closeOfflineQueue()">✖ Band Karein</button>
+    </div>
+  </div>
+</div>
+
+<!-- PWA Install Banner -->
+<div id="pwa-install-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:white;padding:12px 20px;z-index:9998;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;box-shadow:0 -4px 20px rgba(0,0,0,0.2)">
+  <div style="display:flex;align-items:center;gap:12px">
+    <span style="font-size:28px">🚛</span>
+    <div>
+      <div style="font-weight:800;font-size:14px">Transport Manager Install Karein</div>
+      <div style="font-size:12px;opacity:0.85">Home screen pe add karein — bilkul app ki tarah!</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px">
+    <button id="pwa-install-btn" style="background:white;color:#4f46e5;border:none;padding:8px 18px;border-radius:8px;font-weight:800;font-size:13px;cursor:pointer">📲 Install</button>
+    <button id="pwa-install-dismiss" style="background:rgba(255,255,255,0.2);color:white;border:none;padding:8px 14px;border-radius:8px;font-size:13px;cursor:pointer">✕</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- IMG MODAL -->
+<div class="modal-ov" id="img-modal" onclick="this.classList.remove('open')">
+  <img id="modal-img" src="" alt="" />
+</div>
+
+<!-- Sidebar overlay for mobile tap-to-close -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<!-- MAIN APP -->
+<div class="app">
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">🚛</div>
+      <span>Transport</span>
+    </div>
+    <div class="nav-item active" onclick="showPage('dashboard',this)"><span class="ico">📊</span> Dashboard</div>
+    <div class="nav-item" onclick="showPage('trip',this)"><span class="ico">🚛</span> Trip Entry</div>
+    <div class="nav-item" onclick="showPage('expenses',this)"><span class="ico">💰</span> Expenses</div>
+    <div class="nav-item" onclick="showPage('monthly',this)"><span class="ico">📋</span> Monthly</div>
+    <div class="nav-item" onclick="showPage('charts',this)"><span class="ico">📈</span> Charts</div>
+    <div class="nav-item" onclick="showPage('reminders',this)"><span class="ico">📱</span> Reminders</div>
+    <div class="nav-item" onclick="showPage('vehicles',this)"><span class="ico">🚗</span> Vehicles</div>
+    <div class="nav-item" onclick="showPage('expsearch',this)"><span class="ico">🔍</span> Exp. Search</div>
+    <div class="nav-item" onclick="showPage('docexpiry',this)"><span class="ico">📄</span> Doc Expiry</div>
+    <div class="nav-item" onclick="showPage('emi',this)"><span class="ico">💳</span> EMI Tracker</div>
+    <div class="nav-item" onclick="showPage('fuel',this)"><span class="ico">⛽</span> Fuel Log</div>
+    <div class="nav-item" onclick="showPage('sheets',this)"><span class="ico">📊</span> Data View</div>
+    <div class="nav-item" onclick="showPage('settings',this)"><span class="ico">⚙️</span> Settings</div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <!-- Hamburger menu (mobile only) -->
+      <div class="hamburger" id="hamburger-btn" onclick="toggleSidebar()">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="sync-badge"><div class="sync-dot"></div><span id="countdown-txt">60s</span></div>
+      <div class="sync-badge">🔄 Synced</div>
+      <div class="offline-badge" id="offline-queue-badge" onclick="showOfflineQueue()" title="Pending entries — click to view">
+        <div class="offline-dot"></div>
+        <span id="offline-queue-count">0</span> Pending
+      </div>
+      <div class="user-info">
+        <div class="avatar" id="user-avatar">I</div>
+        <span id="user-name-display">Imran Khan</span>
+        <div class="admin-tag">ADMIN</div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ======== DASHBOARD ======== -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-title">📊 Dashboard</div>
+        <div class="page-sub">Business overview — Last refresh: <span id="last-sync">--:--</span></div>
+
+        <div class="card">
+          <div class="form-row">
+            <div class="fg">
+              <label class="fl">View Mode</label>
+              <select class="fi" id="dash-view-mode" onchange="onViewModeChange()">
+                <option value="monthly">Monthly</option>
+                <option value="quarterly">Quarterly</option>
+                <option value="halfyearly">Half Yearly</option>
+                <option value="yearly">Yearly</option>
+              </select>
+            </div>
+            <div class="fg" id="dash-month-wrap">
+              <label class="fl">Month Select</label>
+              <input type="month" class="fi" id="dash-month" onchange="renderDashboard()" />
+            </div>
+            <div class="fg" id="dash-quarter-wrap" style="display:none">
+              <label class="fl">Quarter Select</label>
+              <select class="fi" id="dash-quarter" onchange="renderDashboard()">
+                <option value="Q1">Q1 (Jan-Mar)</option>
+                <option value="Q2">Q2 (Apr-Jun)</option>
+                <option value="Q3">Q3 (Jul-Sep)</option>
+                <option value="Q4">Q4 (Oct-Dec)</option>
+              </select>
+            </div>
+            <div class="fg" id="dash-half-wrap" style="display:none">
+              <label class="fl">Half Year</label>
+              <select class="fi" id="dash-half" onchange="renderDashboard()">
+                <option value="H1">H1 (Jan-Jun)</option>
+                <option value="H2">H2 (Jul-Dec)</option>
+              </select>
+            </div>
+            <div class="fg" id="dash-year-wrap" style="display:none">
+              <label class="fl">Year Select</label>
+              <select class="fi" id="dash-year" onchange="renderDashboard()">
+              </select>
+            </div>
+            <div style="align-self:flex-end">
+              <button class="btn btn-primary btn-sm" onclick="loadAll()">🔄 Refresh</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="sync-banner">
+          <div class="sbi"><div class="sbl">Current Device</div><div class="sbv">🖥 <span id="device-name">Windows PC</span></div></div>
+          <div class="sbi"><div class="sbl">Logged in as</div><div class="sbv" id="sb-user">Imran Khan</div></div>
+          <div class="sbi"><div class="sbl">Last Sync</div><div class="sbv" id="sb-sync">--:--</div></div>
+          <div class="sbi"><div class="sbl">Auto Refresh</div><div class="sbv"><div class="cd-badge" id="sb-cd">🟢 60s</div></div></div>
+        </div>
+
+        <div class="stats-grid" id="dash-stats"></div>
+
+        <div class="card">
+          <div class="sec-hdr">Recent Trips <button class="btn btn-primary btn-sm" onclick="loadAll()">🔄 Sync</button></div>
+          <div class="tbl-wrap"><table id="dash-trips-table"><thead><tr>
+  <th>Date</th><th>Vehicle</th><th>Route</th>
+  <th>Sale<br><span style="font-weight:400;font-size:10px;color:#93c5fd">Amount</span></th>
+  <th>Received<br><span style="font-weight:400;font-size:10px;color:#86efac">Amount</span></th>
+  <th>Pending<br><span style="font-weight:400;font-size:10px;color:#fca5a5">Amount</span></th>
+  <th>Total<br><span style="font-weight:400;font-size:10px;opacity:0.7">Expenses</span></th>
+  <th>Trip<br><span style="font-weight:400;font-size:10px;color:#86efac">Margin</span></th>
+</tr></thead><tbody id="dash-trips-body"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- ======== TRIP ENTRY ======== -->
+      <div class="page" id="page-trip">
+        <div class="page-title">🚛 Trip Entry</div>
+        <div class="page-sub">Naya trip record karein</div>
+        <div class="card">
+          <div class="card-title">Naya Trip</div>
+          <div class="form-row">
+            <div class="fg"><label class="fl">Date *</label><input type="date" class="fi" id="t-date" /></div>
+            <div class="fg"><label class="fl">Vehicle *</label><select class="fi" id="t-vehicle"><option value="">Vehicle select karein</option></select></div>
+            <div class="fg"><label class="fl">Route *</label><input class="fi" id="t-route" placeholder="Delhi to Mumbai" /></div>
+            <div class="fg"><label class="fl">Sale Amount ₹ *</label><input type="number" class="fi" id="t-sale" placeholder="0" oninput="calcTrip()" /></div>
+            <div class="fg"><label class="fl">Received ₹ *</label><input type="number" class="fi" id="t-received" placeholder="0" oninput="calcTrip()" /></div>
+            <div class="fg"><label class="fl">Pending ₹</label><input class="fi pending-field" id="t-pending" readonly /></div>
+            <div class="fg"><label class="fl">Rate ₹</label><input class="fi" id="t-rate" placeholder="Reference" /></div>
+          </div>
+          <div class="form-row">
+            <div class="fg"><label class="fl">Loading ₹</label><input type="number" class="fi" id="t-loading" placeholder="0" oninput="calcTrip()" /></div>
+            <div class="fg"><label class="fl">Diesel ₹</label><input type="number" class="fi" id="t-diesel" placeholder="0" oninput="calcTrip()" /></div>
+            <div class="fg"><label class="fl">Driver ₹</label><input type="number" class="fi" id="t-driver" placeholder="0" oninput="calcTrip()" /></div>
+            <div class="fg"><label class="fl">Labour ₹</label><input type="number" class="fi" id="t-labour" placeholder="0" oninput="calcTrip()" /></div>
+            <div class="fg"><label class="fl">Urea ₹</label><input type="number" class="fi" id="t-urea" placeholder="0" oninput="calcTrip()" /></div>
+            <div class="fg"><label class="fl">Toll ₹</label><input type="number" class="fi" id="t-toll" placeholder="0" oninput="calcTrip()" /></div>
+            <div class="fg"><label class="fl">Maint. Reason</label><input class="fi" id="t-mreason" placeholder="e.g. Tyre change" /></div>
+          </div>
+          <div class="form-row">
+            <div class="fg"><label class="fl">Maintenance ₹</label><input type="number" class="fi" id="t-maint" placeholder="0" oninput="calcTrip()" /></div>
+            <div class="fg"><label class="fl">Client Phone</label><input class="fi" id="t-phone" placeholder="+91 98765 43210" /></div>
+            <div class="fg"><label class="fl">Total Expenses ₹</label><input class="fi auto" id="t-total-exp" readonly /></div>
+            <div class="fg"><label class="fl">Trip Margin ₹</label><input class="fi margin" id="t-margin" readonly /></div>
+            <div class="fg"><label class="fl">Receipt Image</label>
+              <input type="file" accept="image/*" id="t-img-file" style="display:none" onchange="previewImg('t-img-file','t-img-prev','t-img-data')" />
+              <button class="btn btn-secondary btn-sm" onclick="document.getElementById('t-img-file').click()">📎 Attach</button>
+              <img id="t-img-prev" class="img-thumb" style="display:none;margin-top:4px" onclick="openImgModal(this.src)" />
+              <input type="hidden" id="t-img-data" />
+            </div>
+          </div>
+          <div class="btns-row">
+            <button class="btn btn-primary" onclick="saveTrip()">💾 <span id="trip-btn-txt">Save Trip</span></button>
+            <button class="btn btn-secondary" onclick="resetTrip()">↺ Reset</button>
+          </div>
+          <input type="hidden" id="t-edit-id" />
+        </div>
+        <div class="card">
+          <div class="sec-hdr">Saare Trips <span id="trips-count" style="font-size:12px;color:#6b7280"></span></div>
+          <div class="tbl-wrap"><table><thead><tr>
+  <th>Date</th>
+  <th>Vehicle</th>
+  <th>Route</th>
+  <th>Sale<br><span style="font-weight:400;font-size:10px;color:#93c5fd">Amount</span></th>
+  <th>Received<br><span style="font-weight:400;font-size:10px;color:#86efac">Amount</span></th>
+  <th>Pending<br><span style="font-weight:400;font-size:10px;color:#fca5a5">Amount</span></th>
+  <th>Diesel<br><span style="font-weight:400;font-size:10px;opacity:0.7">Cost</span></th>
+  <th>Driver<br><span style="font-weight:400;font-size:10px;opacity:0.7">Cost</span></th>
+  <th>Toll<br><span style="font-weight:400;font-size:10px;opacity:0.7">Tax</span></th>
+  <th>Maint.<br><span style="font-weight:400;font-size:10px;opacity:0.7">Cost</span></th>
+  <th>Total<br><span style="font-weight:400;font-size:10px;opacity:0.7">Expenses</span></th>
+  <th>Trip<br><span style="font-weight:400;font-size:10px;color:#86efac">Margin</span></th>
+  <th>Img</th>
+  <th>Actions</th>
+</tr></thead><tbody id="trips-body"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- ======== EXPENSES ======== -->
+      <div class="page" id="page-expenses">
+        <div class="page-title">💰 Other Expenses</div>
+        <div class="page-sub">Miscellaneous business expenses</div>
+        <div class="card">
+          <div class="card-title">Naya Expense</div>
+          <div class="form-row">
+            <div class="fg"><label class="fl">Date *</label><input type="date" class="fi" id="e-date" /></div>
+            <div class="fg"><label class="fl">Month *</label><input type="month" class="fi" id="e-month" /></div>
+            <div class="fg"><label class="fl">Vehicle</label>
+              <select class="fi" id="e-vehicle">
+                <option value="">— General / Koi vehicle nahi —</option>
+              </select>
+            </div>
+            <div class="fg"><label class="fl">Type *</label>
+              <select class="fi" id="e-type">
+                <option value="">Type select karein</option>
+                <option>Repair & Maintenance</option><option>House / Rent</option><option>Other</option>
+                <option>Miscellaneous</option><option>Salary</option><option>Insurance</option><option>Office</option><option>Bank Charge</option><option>Purchase</option>
+              </select>
+            </div>
+            <div class="fg"><label class="fl">Amount ₹ *</label><input type="number" class="fi" id="e-amount" placeholder="0" /></div>
+          </div>
+          <div class="form-row">
+            <div class="fg" style="flex:3"><label class="fl">Description</label><input class="fi" id="e-desc" placeholder="Brief description..." /></div>
+            <div class="fg"><label class="fl">Receipt Image</label>
+              <input type="file" accept="image/*" id="e-img-file" style="display:none" onchange="previewImg('e-img-file','e-img-prev','e-img-data')" />
+              <button class="btn btn-secondary btn-sm" onclick="document.getElementById('e-img-file').click()">📎 Attach</button>
+              <img id="e-img-prev" class="img-thumb" style="display:none;margin-top:4px" onclick="openImgModal(this.src)" />
+              <input type="hidden" id="e-img-data" />
+            </div>
+          </div>
+          <div class="btns-row">
+            <button class="btn btn-primary" onclick="saveExpense()">💾 <span id="exp-btn-txt">Save</span></button>
+            <button class="btn btn-secondary" onclick="resetExpense()">↺ Reset</button>
+          </div>
+          <input type="hidden" id="e-edit-id" />
+        </div>
+        <div class="card">
+          <div class="sec-hdr">Saare Expenses <span id="exp-count" style="font-size:12px;color:#6b7280"></span></div>
+          <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Vehicle</th><th>Month</th><th>Type</th><th>Description</th><th>Amount</th><th>Img</th><th>Actions</th></tr></thead><tbody id="exp-body"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- ======== MONTHLY REPORT ======== -->
+      <div class="page" id="page-monthly">
+        <div class="page-title">📋 Monthly Report</div>
+        <div class="page-sub">Month-wise profit & loss analysis</div>
+        <div class="card">
+          <div class="form-row">
+            <div class="fg"><label class="fl">Month</label><input type="month" class="fi" id="mr-month" onchange="renderMonthly()" /></div>
+            <div class="fg"><label class="fl">Vehicle</label><select class="fi" id="mr-vehicle" onchange="renderMonthly()"><option value="all">Saare Vehicles</option></select></div>
+          </div>
+        </div>
+        <div id="monthly-content"></div>
+      </div>
+
+      <!-- ======== CHARTS ======== -->
+      <div class="page" id="page-charts">
+        <div class="page-title">📈 Charts</div>
+        <div class="page-sub">Business performance visuals</div>
+        <div id="charts-content"></div>
+      </div>
+
+      <!-- ======== REMINDERS ======== -->
+      <div class="page" id="page-reminders">
+        <div class="page-title">📱 Payment Reminders</div>
+        <div class="page-sub">Clients ko payment reminder bhejein</div>
+        <div class="card">
+          <div class="fg" style="max-width:200px"><label class="fl">Vehicle Filter</label>
+            <select class="fi" id="rem-vehicle" onchange="renderReminders()"><option value="all">Saare Vehicles</option></select>
+          </div>
+        </div>
+        <div class="card"><div class="tbl-wrap" id="rem-content"></div></div>
+      </div>
+
+      <!-- ======== VEHICLES ======== -->
+      <div class="page" id="page-vehicles">
+        <div class="page-title">🚗 Vehicles</div>
+        <div class="page-sub">Fleet manage karein</div>
+        <div class="card">
+          <div class="form-row">
+            <div class="fg"><label class="fl">Vehicle Number *</label><input class="fi" id="v-number" placeholder="MH12AB1234" /></div>
+            <div class="fg"><label class="fl">Type</label>
+              <select class="fi" id="v-type"><option value="">Select</option><option>Truck</option><option>Mini Truck</option><option>Pickup</option><option>Trailer</option><option>Container</option><option>Tanker</option><option>Bus</option><option>Other</option></select>
+            </div>
+            <div class="fg"><label class="fl">Driver Name</label><input class="fi" id="v-driver" placeholder="Driver ka naam" /></div>
+          </div>
+          <input type="hidden" id="v-edit-id" />
+          <button class="btn btn-primary btn-sm" id="v-save-btn" onclick="saveVehicle()">➕ Add Vehicle</button>
+          <button class="btn btn-secondary btn-sm" id="v-cancel-btn" style="display:none" onclick="cancelEditVehicle()">✕ Cancel</button>
+        </div>
+        <div class="card">
+          <div class="sec-hdr">Fleet List</div>
+          <div id="v-edit-banner" style="display:none;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:#92400e">✏️ Edit mode — vehicle update karein phir Save karein</div><div class="tbl-wrap"><table><thead><tr><th>Number</th><th>Type</th><th>Driver</th><th>Trips</th><th>Actions</th></tr></thead><tbody id="vehicles-body"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- ======== DOC EXPIRY ======== -->
+      <div class="page" id="page-docexpiry">
+        <div class="page-title">📄 Document Expiry Alerts</div>
+        <div class="page-sub">Vehicle documents ki expiry track karein</div>
+        <div class="card">
+          <div class="card-title">Naya Document Add Karein</div>
+          <div class="form-row">
+            <div class="fg"><label class="fl">Vehicle *</label><select class="fi" id="d-vehicle"><option value="">Select Vehicle</option></select></div>
+            <div class="fg"><label class="fl">Document Type *</label>
+              <select class="fi" id="d-type"><option value="">Select Type</option><option>RC</option><option>Insurance</option><option>PUC</option><option>Fitness</option><option>Permit</option><option>Tax</option><option>Fastag</option><option>Other</option></select>
+            </div>
+            <div class="fg"><label class="fl">Expiry Date *</label><input type="date" class="fi" id="d-expiry" /></div>
+            <div class="fg"><label class="fl">Notes</label><input class="fi" id="d-notes" placeholder="Optional notes..." /></div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="saveDoc()">➕ Add Document</button>
+        </div>
+        <div class="card">
+          <div class="sec-hdr">Saare Documents</div>
+          <div class="tbl-wrap"><table><thead><tr><th>Vehicle</th><th>Document</th><th>Expiry</th><th>Status</th><th>Notes</th><th>Action</th></tr></thead><tbody id="docs-body"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- ======== EMI TRACKER ======== -->
+      <div class="page" id="page-emi">
+        <div class="page-title">💳 EMI / Loan Tracker</div>
+        <div class="page-sub">Vehicle loan aur EMI payments track karein</div>
+        <div id="emi-data-warning" style="display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#991b1b">
+          ⚠️ <b>Data Fix Required:</b> Purana loan record Google Sheet mein column mismatch hai. 
+          Kripya purana loan <b>delete karein</b> aur <b>dobara add karein</b> with Interest Rate field. 
+          Isse Base EMI ₹12.5 ki jagah ₹81,553 dikhega.
+        </div>
+        <div class="card">
+          <div class="card-title">➕ Naya Loan Add Karein</div>
+          <!-- ROW 1: Basic Info -->
+          <div class="form-row">
+            <div class="fg"><label class="fl">Vehicle *</label><select class="fi" id="l-vehicle"><option value="">Select</option></select></div>
+            <div class="fg"><label class="fl">Bank / Lender *</label><input class="fi" id="l-bank" placeholder="HDFC Bank, SBI..." /></div>
+            <div class="fg"><label class="fl">Principal (Loan) ₹ *</label><input type="number" class="fi" id="l-amount" placeholder="3544192" oninput="calcLoanPreview()" /></div>
+            <div class="fg"><label class="fl">Interest Rate % p.a.</label><input type="number" class="fi" id="l-rate" placeholder="12.5" step="0.01" oninput="calcLoanPreview()" /></div>
+            <div class="fg"><label class="fl">Total EMIs *</label><input type="number" class="fi" id="l-total" value="59" oninput="calcLoanPreview()" /></div>
+            <div class="fg">
+  <label class="fl">EMI Amount ₹ *</label>
+  <input type="number" class="fi" id="l-emi" placeholder="Auto-calc" oninput="calcLoanPreview()" />
+  <div style="font-size:10px;color:#6b7280;margin-top:2px">Bank ka exact EMI dalein (e.g. 81553) ya blank chhodo auto ke liye</div>
+</div>
+            <div class="fg"><label class="fl">EMIs Paid</label><input type="number" class="fi" id="l-paid" value="0" /></div>
+            <div class="fg"><label class="fl">Start Date</label><input type="date" class="fi" id="l-start" oninput="calcLoanPreview()" /></div>
+            <div class="fg"><label class="fl">EMI Due Day (1-31)</label><input type="number" class="fi" id="l-due" placeholder="5" value="5" /></div>
+          </div>
+          <!-- LOAN PREVIEW SUMMARY -->
+          <div id="loan-preview" style="display:none;margin:14px 0;background:linear-gradient(135deg,#4f46e5,#7c3aed);border-radius:12px;padding:16px;color:white">
+            <div style="font-weight:800;font-size:13px;margin-bottom:12px">📊 Loan Summary (Auto-Calculated)</div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px" id="loan-preview-stats"></div>
+            <div style="background:rgba(255,255,255,0.15);border-radius:8px;padding:10px;font-size:12px" id="loan-preview-note"></div>
+          </div>
+          <!-- AMORTIZATION TABLE TOGGLE -->
+          <div id="amort-section" style="display:none;margin-bottom:14px">
+            <div style="font-weight:700;font-size:13px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between">
+              📅 Amortization Schedule
+              <button class="btn btn-secondary btn-sm" onclick="toggleAmort()">▲ Hide</button>
+            </div>
+            <div style="overflow-x:auto;max-height:300px;overflow-y:auto;border:1px solid #e5e7eb;border-radius:8px">
+              <table style="width:100%;border-collapse:collapse;font-size:11px">
+                <thead style="position:sticky;top:0"><tr style="background:#4f46e5;color:white">
+                  <th style="padding:7px 10px;text-align:left">#</th>
+                  <th style="padding:7px 10px;text-align:left">Month</th>
+                  <th style="padding:7px 10px;text-align:right">EMI</th>
+                  <th style="padding:7px 10px;text-align:right">Principal</th>
+                  <th style="padding:7px 10px;text-align:right">Interest</th>
+                  <th style="padding:7px 10px;text-align:right">Balance</th>
+                </tr></thead>
+                <tbody id="amort-body"></tbody>
+              </table>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <button class="btn btn-primary btn-sm" onclick="saveLoan()">➕ Add Loan</button>
+            <button class="btn btn-secondary btn-sm" id="amort-toggle-btn" style="display:none" onclick="toggleAmort()">📅 Show Amortization</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">📅 Monthly EMI Entry (Manual)</div>
+          <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:8px 12px;font-size:12px;color:#92400e;margin-bottom:12px">
+            ⚠️ Agar payment date 5 ke baad ho ya amount ₹81,553 se kam ho — Bank Charge ₹50 + Penalty ₹550 automatically add hoga
+          </div>
+          <div class="form-row">
+            <div class="fg"><label class="fl">Loan Select *</label><select class="fi" id="ep-loan"><option value="">Loan select karein</option></select></div>
+            <div class="fg"><label class="fl">Payment Month *</label><input type="month" class="fi" id="ep-month" /></div>
+            <div class="fg"><label class="fl">Payment Date *</label><input type="date" class="fi" id="ep-date" /></div>
+            <div class="fg"><label class="fl">Amount Paid ₹ *</label><input type="number" class="fi" id="ep-amount" placeholder="0" /></div>
+            <div class="fg"><label class="fl">Payment Mode</label><select class="fi" id="ep-mode"><option value="">Select</option><option>Cash</option><option>Online</option><option>Cheque</option><option>UPI</option></select></div>
+            <div class="fg"><label class="fl">Notes</label><input class="fi" id="ep-notes" placeholder="Receipt no, ref no..." /></div>
+            <div class="fg"><label class="fl">Receipt Image</label>
+              <input type="file" accept="image/*" id="ep-img-file" style="display:none" onchange="previewImg('ep-img-file','ep-img-prev','ep-img-data')" />
+              <button class="btn btn-secondary btn-sm" onclick="document.getElementById('ep-img-file').click()">📎 Attach</button>
+              <img id="ep-img-prev" class="img-thumb" style="display:none;margin-top:4px" onclick="openImgModal(this.src)" />
+              <input type="hidden" id="ep-img-data" />
+            </div>
+          </div>
+          <button class="btn btn-success" onclick="saveEmiPayment()">✅ EMI Paid Mark Karein</button>
+          <button class="btn btn-secondary btn-sm" id="ep-cancel-btn" style="display:none;margin-left:8px" onclick="cancelEmiEdit()">✕ Cancel Edit</button>
+          <input type="hidden" id="ep-edit-id" />
+          <div id="emi-payment-detail" style="display:none;margin-top:12px"></div>
+        </div>
+        <div class="card">
+          <div class="sec-hdr">Active Loans</div>
+          <!-- Summary table header -->
+          <div style="overflow-x:auto;margin-bottom:8px">
+            <table style="width:100%;border-collapse:collapse;font-size:11px">
+              <thead>
+                <tr style="background:#f9fafb;border-bottom:2px solid #e5e7eb">
+                  <th style="padding:8px 10px;text-align:left;font-weight:700;color:#6b7280;white-space:nowrap">VEHICLE</th>
+                  <th style="padding:8px 10px;text-align:left;font-weight:700;color:#6b7280">BANK</th>
+                  <th style="padding:8px 10px;text-align:right;font-weight:700;color:#6b7280">LOAN AMT</th>
+                  <th style="padding:8px 10px;text-align:right;font-weight:700;color:#6b7280">EMI</th>
+                  <th style="padding:8px 10px;text-align:center;font-weight:700;color:#6b7280">TOTAL</th>
+                  <th style="padding:8px 10px;text-align:right;font-weight:700;color:#6b7280">PAID</th>
+                  <th style="padding:8px 10px;text-align:right;font-weight:700;color:#6b7280">REMAINING</th>
+                  <th style="padding:8px 10px;text-align:center;font-weight:700;color:#6b7280">DUE DAY</th>
+                  <th style="padding:8px 10px;text-align:center;font-weight:700;color:#6b7280">ACTION</th>
+                </tr>
+              </thead>
+              <tbody id="loans-table-body"></tbody>
+            </table>
+          </div>
+          <!-- Expanded loan cards -->
+          <div id="loans-body"></div>
+        </div>
+        <div class="card">
+          <div class="sec-hdr">EMI Payment Records</div>
+          <div class="tbl-wrap"><table><thead><tr><th>Month</th><th>Date</th><th>Loan</th><th>Base EMI</th><th>Prev Bal</th><th>Total Due</th><th>Paid</th><th>Charge</th><th>Penalty</th><th>Status</th><th>Carry Fwd</th><th>Mode</th><th>Actions</th></tr></thead><tbody id="emipay-body"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- ======== FUEL LOG ======== -->
+      <div class="page" id="page-fuel">
+        <div class="page-title">⛽ Fuel Log</div>
+        <div class="page-sub">Vehicle fuel consumption track karein</div>
+        <div class="card">
+          <div class="form-row">
+            <div class="fg"><label class="fl">Date *</label><input type="date" class="fi" id="f-date" /></div>
+            <div class="fg"><label class="fl">Vehicle *</label><select class="fi" id="f-vehicle"><option value="">Select</option></select></div>
+            <div class="fg"><label class="fl">Liters *</label><input type="number" class="fi" id="f-liters" placeholder="0" oninput="calcFuel()" /></div>
+            <div class="fg"><label class="fl">Price/Liter ₹</label><input type="number" class="fi" id="f-price" placeholder="0" oninput="calcFuel()" /></div>
+            <div class="fg"><label class="fl">Total Amount ₹</label><input class="fi auto" id="f-total" readonly /></div>
+            <div class="fg"><label class="fl">Odometer (km)</label><input type="number" class="fi" id="f-odo" placeholder="0" /></div>
+            <div class="fg"><label class="fl">Fuel Station</label><input class="fi" id="f-station" placeholder="Station name" /></div>
+            <div class="fg"><label class="fl">Payment Mode</label><select class="fi" id="f-mode"><option value="">Select</option><option>Cash</option><option>Card</option><option>UPI</option><option>Credit</option></select></div>
+          </div>
+          <div class="form-row">
+            <div class="fg" style="flex:3"><label class="fl">Notes</label><input class="fi" id="f-notes" placeholder="Notes..." /></div>
+            <div class="fg"><label class="fl">Receipt Image</label>
+              <input type="file" accept="image/*" id="f-img-file" style="display:none" onchange="previewImg('f-img-file','f-img-prev','f-img-data')" />
+              <button class="btn btn-secondary btn-sm" onclick="document.getElementById('f-img-file').click()">📎 Attach</button>
+              <img id="f-img-prev" class="img-thumb" style="display:none;margin-top:4px" onclick="openImgModal(this.src)" />
+              <input type="hidden" id="f-img-data" />
+            </div>
+          </div>
+          <div class="btns-row">
+            <button class="btn btn-primary" onclick="saveFuel()">💾 <span id="fuel-btn-txt">Save</span></button>
+            <button class="btn btn-secondary" onclick="resetFuel()">↺ Reset</button>
+          </div>
+          <input type="hidden" id="f-edit-id" />
+        </div>
+        <div class="card">
+          <div class="sec-hdr">Saare Fuel Entries <span id="fuel-total-txt" style="font-size:12px;color:#6b7280"></span></div>
+          <div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Vehicle</th><th>Liters</th><th>Rate</th><th>Amount</th><th>Odo</th><th>Station</th><th>Mode</th><th>Img</th><th>Actions</th></tr></thead><tbody id="fuel-body"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- ======== EXPENSE SEARCH ======== -->
+      <div class="page" id="page-expsearch">
+        <div class="page-title">🔍 Vehicle Expense Search</div>
+        <div class="page-sub">Vehicle wise maintenance aur repair history search karein</div>
+        <div class="card">
+          <div class="form-row">
+            <div class="fg"><label class="fl">Vehicle Select</label>
+              <select class="fi" id="es-vehicle"><option value="all">Saare Vehicles</option></select>
+            </div>
+            <div class="fg"><label class="fl">Expense Type</label>
+              <select class="fi" id="es-type">
+                <option value="all">All Purchases</option>
+                <option>Repair &amp; Maintenance</option><option>House / Rent</option><option>Miscellaneous</option>
+                <option>Salary</option><option>Insurance</option><option>Office</option><option>Bank Charge</option><option>Purchase</option><option>Other</option>
+                <option value="trip-diesel">Trip: Diesel</option><option value="trip-toll">Trip: Toll</option>
+                <option value="trip-maint">Trip: Maintenance</option><option value="trip-loading">Trip: Loading</option>
+              </select>
+            </div>
+            <div class="fg"><label class="fl">From Date</label><input type="date" class="fi" id="es-from" /></div>
+            <div class="fg"><label class="fl">To Date</label><input type="date" class="fi" id="es-to" /></div>
+            <div class="fg" style="flex:2"><label class="fl">Keyword Search</label><input class="fi" id="es-keyword" placeholder="e.g. TUBE, TYRE, repair..." /></div>
+          </div>
+          <div class="btns-row">
+            <button class="btn btn-primary" onclick="runExpSearch()">🔍 Search</button>
+            <button class="btn btn-secondary" onclick="resetExpSearch()">↺ Reset</button>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px" id="es-stats"></div>
+        <div class="card">
+          <div class="sec-hdr">📋 Search Results <span id="es-result-count" style="font-size:12px;color:#6b7280"></span></div>
+          <div class="tbl-wrap" id="es-results-table"></div>
+        </div>
+        <div class="card" id="es-timeline-card" style="display:none">
+          <div class="sec-hdr">📅 Expense Timeline</div>
+          <div id="es-timeline"></div>
+        </div>
+      </div>
+
+      <!-- ======== DATA VIEW ======== -->
+      <div class="page" id="page-sheets">
+        <div class="page-title">📊 Data View</div>
+        <div class="page-sub">Saara data sheet-wise dekhein</div>
+        <div class="card" style="padding-bottom:8px">
+          <!-- Sheet Tabs -->
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px" id="sheet-tabs"></div>
+          <!-- Filter Row -->
+          <div id="dv-filters" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px;padding:10px 12px;background:#f8fafc;border-radius:10px;border:1px solid #e2e8f0">
+            <span style="font-size:12px;font-weight:600;color:#64748b">🔍 Filter:</span>
+            <select id="dv-year" class="fi" style="width:100px;padding:5px 8px;font-size:13px" onchange="renderSheets()">
+              <option value="">Sab Saal</option>
+            </select>
+            <select id="dv-month" class="fi" style="width:120px;padding:5px 8px;font-size:13px" onchange="renderSheets()">
+              <option value="">Sab Mahine</option>
+              <option value="01">January</option><option value="02">February</option>
+              <option value="03">March</option><option value="04">April</option>
+              <option value="05">May</option><option value="06">June</option>
+              <option value="07">July</option><option value="08">August</option>
+              <option value="09">September</option><option value="10">October</option>
+              <option value="11">November</option><option value="12">December</option>
+            </select>
+            <select id="dv-vehicle" class="fi" style="width:130px;padding:5px 8px;font-size:13px" onchange="renderSheets()">
+              <option value="">Sab Vehicles</option>
+            </select>
+            <button class="btn btn-sm btn-secondary" onclick="clearDvFilters()" style="font-size:12px;padding:5px 10px">✖ Clear</button>
+            <span id="dv-count" style="margin-left:auto;font-size:12px;color:#64748b;font-weight:600"></span>
+            <button class="btn btn-success btn-sm" onclick="exportCSV()" style="font-size:12px;padding:5px 12px">⬇ Export CSV</button>
+          </div>
+          <!-- Summary Bar -->
+          <div id="dv-summary" style="display:none;gap:8px;flex-wrap:wrap;margin-bottom:10px"></div>
+          <!-- Table -->
+          <div class="tbl-wrap" id="sheet-content"></div>
+        </div>
+      </div>
+
+      <!-- ======== SETTINGS ======== -->
+      <div class="page" id="page-settings">
+        <div class="page-title">⚙️ Settings</div>
+        <div class="page-sub">App configuration</div>
+        <div class="card">
+          <div class="card-title">Google Sheets Connection</div>
+          <div class="fg" style="max-width:600px;margin-bottom:12px"><label class="fl">Apps Script URL</label><input class="fi" id="settings-url" /></div>
+          <div class="fg" style="max-width:300px;margin-bottom:12px"><label class="fl">Your Name</label><input class="fi" id="settings-name" /></div>
+          <button class="btn btn-primary" onclick="updateSettings()">💾 Save Settings</button>
+          <button class="btn btn-secondary" style="margin-left:8px" onclick="clearSetup()">🗑 Reset Setup</button>
+          <div style="margin-top:12px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px;font-size:12px;color:#065f46">
+            ✅ <b>PWA Tip:</b> Agar home screen app mein URL lost ho jaye — Settings mein wahi URL dobara dale aur "Save Settings" karein.
+            URL save hogi aur app kaam karega.
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">App Information</div>
+          <div style="font-size:13px;line-height:2.2">
+            <div><b>Cross-device Sync:</b> ✅ Active (Google Sheets)</div>
+            <div><b>Auto Refresh:</b> ✅ Har 60 seconds</div>
+            <div><b>Image Attachment:</b> ✅ Supported (Base64)</div>
+            <div><b>Date Order:</b> ✅ Descending (Latest first)</div>
+            <div><b>Back-date Entry:</b> ✅ Auto-sorted</div>
+            <div><b>Google Sheet URL:</b> <span id="settings-sheet-link">--</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<script>
+// ============================================================
+// STATE
+// ============================================================
+let DB = { trips:[], expenses:[], vehicles:[], documents:[], loans:[], emiPayments:[], fuelLogs:[] };
+let API_URL = "";
+let USER_NAME = "Imran Khan";
+let countdown = 60;
+let countdownInterval;
+let activeSheet = "Trips";
+
+// ============================================================
+// SETUP
+// ============================================================
+// Safe localStorage wrapper (works even if blocked)
+// Robust storage — uses localStorage + sessionStorage + cookie fallback
+// Needed because iOS PWA standalone mode can isolate localStorage from Safari
+function lsSet(key, val) {
+  try { localStorage.setItem(key, val); } catch(e) {}
+  try { sessionStorage.setItem(key, val); } catch(e) {}
+  try {
+    const d = new Date(); d.setFullYear(d.getFullYear() + 1);
+    document.cookie = key + '=' + encodeURIComponent(val) + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+  } catch(e) {}
+}
+
+function lsGet(key) {
+  // Try localStorage first
+  try { const v = localStorage.getItem(key); if (v) return v; } catch(e) {}
+  // Try sessionStorage
+  try { const v = sessionStorage.getItem(key); if (v) return v; } catch(e) {}
+  // Try cookie fallback
+  try {
+    const match = document.cookie.split(';').find(c => c.trim().startsWith(key + '='));
+    if (match) return decodeURIComponent(match.split('=').slice(1).join('='));
+  } catch(e) {}
+  return null;
+}
+
+function lsRemove(key) {
+  try { localStorage.removeItem(key); } catch(e) {}
+  try { sessionStorage.removeItem(key); } catch(e) {}
+  try { document.cookie = key + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/'; } catch(e) {}
+}
+
+function saveSetup() {
+  const url = document.getElementById('api-url-input').value.trim();
+  const name = document.getElementById('user-name-input').value.trim() || "Imran Khan";
+  if (!url || !url.includes('script.google.com')) { alert("Valid Apps Script URL paste karein!\n\nExample:\nhttps://script.google.com/macros/s/ABC.../exec"); return; }
+  lsSet('tm_api_url', url);
+  lsSet('tm_user_name', name);
+  initApp(url, name);
+}
+
+function clearSetup() {
+  if (!confirm("Kya aap setup reset karna chahte hain?")) return;
+  lsRemove('tm_api_url');
+  lsRemove('tm_user_name');
+  location.reload();
+}
+
+function updateSettings() {
+  const url = document.getElementById('settings-url').value.trim();
+  const name = document.getElementById('settings-name').value.trim();
+  lsSet('tm_api_url', url);
+  lsSet('tm_user_name', name);
+  API_URL = url; USER_NAME = name;
+  showToast("Settings save ho gayi!", "ok");
+  updateUserDisplay();
+}
+
+window.onload = function() {
+  // Detect standalone PWA mode (home screen app)
+  const isStandalone = window.navigator.standalone === true || 
+    window.matchMedia('(display-mode: standalone)').matches;
+  
+  // Hide app initially
+  document.querySelector('.app').style.display = 'none';
+  document.getElementById('setup-screen').style.display = 'flex';
+  
+  // Show notice if standalone mode
+  const notice = document.getElementById('pwa-mode-notice');
+  if (isStandalone && notice) notice.style.display = 'block';
+
+  const savedUrl = lsGet('tm_api_url');
+  const savedName = lsGet('tm_user_name') || 'Imran Khan';
+  
+  if (savedUrl) {
+    initApp(savedUrl, savedName);
+  } else if (isStandalone) {
+    // In standalone mode with no URL — show setup with steps
+    const stepsEl = document.getElementById('setup-steps');
+    if (stepsEl) stepsEl.style.display = 'block';
+  }
+};
+
+function initApp(url, name) {
+  API_URL = url; USER_NAME = name;
+  document.getElementById('setup-screen').style.display = 'none';
+  document.querySelector('.app').style.display = 'flex';
+  updateUserDisplay();
+  setDefaults();
+  // Save to all storage mechanisms (PWA iOS isolation workaround)
+  lsSet('tm_api_url', url);
+  lsSet('tm_user_name', name);
+  initSheets().then(() => loadAll());
+  startCountdown();
+  updateOfflineBadge();
+  document.getElementById('settings-url').value = url;
+  document.getElementById('settings-name').value = name;
+}
+
+function updateUserDisplay() {
+  document.getElementById('user-name-display').textContent = USER_NAME;
+  document.getElementById('sb-user').textContent = USER_NAME;
+  document.getElementById('user-avatar').textContent = USER_NAME.charAt(0).toUpperCase();
+}
+
+function setDefaults() {
+  const today = new Date().toISOString().split('T')[0];
+  const month = today.slice(0, 7);
+  ['t-date','e-date','f-date','ep-date'].forEach(id => { const el=document.getElementById(id); if(el) el.value=today; });
+  ['e-month','ep-month','dash-month','mr-month'].forEach(id => { const el=document.getElementById(id); if(el) el.value=month; });
+  // Device detection
+  const ua = navigator.userAgent;
+  const dev = /iPhone/i.test(ua) ? '📱 iPhone' : /Android/i.test(ua) ? '📱 Android' : /Mac/i.test(ua) ? '💻 MacBook' : /Win/i.test(ua) ? '🖥 Windows PC' : '🖥 Desktop';
+  document.getElementById('device-name').textContent = dev;
+}
+
+// ============================================================
+// OFFLINE QUEUE SYSTEM
+// ============================================================
+const OQ_KEY = 'tm_offline_queue';
+
+function oqLoad() {
+  try { return JSON.parse(localStorage.getItem(OQ_KEY) || '[]'); } catch(e) { return []; }
+}
+function oqSave(q) {
+  try { localStorage.setItem(OQ_KEY, JSON.stringify(q)); } catch(e) {}
+}
+function oqAdd(action, body) {
+  const q = oqLoad();
+  q.push({ id: 'oq_' + Date.now() + '_' + Math.random().toString(36).slice(2,6), action, body, status: 'pending', time: new Date().toISOString() });
+  oqSave(q);
+  updateOfflineBadge();
+}
+function oqCount() { return oqLoad().filter(i => i.status !== 'done').length; }
+
+function updateOfflineBadge() {
+  const c = oqCount();
+  const badge = document.getElementById('offline-queue-badge');
+  const countEl = document.getElementById('offline-queue-count');
+  if (badge && countEl) {
+    countEl.textContent = c;
+    if (c > 0) badge.classList.add('show'); else badge.classList.remove('show');
+  }
+}
+
+function showOfflineQueue() {
+  const modal = document.getElementById('offline-queue-modal');
+  if (modal) { renderOfflineQueue(); modal.classList.add('show'); }
+}
+function closeOfflineQueue() {
+  const modal = document.getElementById('offline-queue-modal');
+  if (modal) modal.classList.remove('show');
+}
+
+function renderOfflineQueue() {
+  const q = oqLoad().filter(i => i.status !== 'done');
+  const el = document.getElementById('oq-list');
+  if (!el) return;
+  if (!q.length) { el.innerHTML = '<div class="oq-empty">✅ Koi pending entry nahi hai!</div>'; return; }
+  const labels = { add: 'Naya Record', update: 'Update', delete: 'Delete', saveEmiLoan:'EMI Loan', saveEmiEntry:'EMI Payment' };
+  const sheets = { trips:'Trip', expenses:'Expense', fuelLogs:'Fuel Log', vehicles:'Vehicle', documents:'Document', loans:'EMI Loan', emiPayments:'EMI Payment' };
+  el.innerHTML = q.map(item => {
+    const sheet = (item.body && item.body.sheet) ? (sheets[item.body.sheet] || item.body.sheet) : item.action;
+    const label = labels[item.action] || item.action;
+    const detail = item.body && item.body.record ? Object.entries(item.body.record).filter(([k,v])=>v && !k.includes('image')).slice(0,3).map(([k,v])=>`${k}: ${v}`).join(' | ') : '';
+    const t = new Date(item.time);
+    const timeStr = `${t.getDate()}/${t.getMonth()+1} ${t.getHours()}:${String(t.getMinutes()).padStart(2,'0')}`;
+    const failed = item.status === 'failed';
+    return `<div class="oq-item ${failed?'failed':''}">
+      <div class="oq-type">${failed?'❌ FAILED — ':'⏳ '}${label} — ${sheet}</div>
+      <div class="oq-detail">${detail || '(details available)'}</div>
+      <div class="oq-time">⏰ ${timeStr}${failed && item.error ? ' | Error: '+item.error : ''}</div>
+    </div>`;
+  }).join('');
+}
+
+async function syncOfflineQueue() {
+  const q = oqLoad();
+  const pending = q.filter(i => i.status === 'pending' || i.status === 'failed');
+  if (!pending.length) { showToast('Koi pending entry nahi!', 'ok'); return; }
+  if (!navigator.onLine) { showToast('Internet nahi hai! Pehle internet connect karein.', 'err'); return; }
+  const btn = document.getElementById('oq-sync-btn');
+  if (btn) { btn.textContent = '⏳ Sync ho raha hai...'; btn.disabled = true; }
+  let success = 0, fail = 0;
+  for (const item of pending) {
+    try {
+      await apiCall(item.action, item.body);
+      item.status = 'done';
+      success++;
+    } catch(e) {
+      item.status = 'failed';
+      item.error = e.message || 'Unknown error';
+      fail++;
+    }
+  }
+  oqSave(q.filter(i => i.status !== 'done'));
+  updateOfflineBadge();
+  if (btn) { btn.textContent = '🔄 Abhi Sync Karein'; btn.disabled = false; }
+  renderOfflineQueue();
+  if (success > 0) { await loadAll(); showToast(`✅ ${success} entries sync ho gayi!${fail>0?' | '+fail+' fail':''} `, 'ok'); }
+  else if (fail > 0) { showToast(`❌ ${fail} entries fail huyi. Check karein.`, 'err'); }
+}
+
+function clearFailedQueue() {
+  if (!confirm('Sirf FAILED entries delete hogi. Pending entries rahegi. OK?')) return;
+  const q = oqLoad().filter(i => i.status !== 'failed');
+  oqSave(q);
+  updateOfflineBadge();
+  renderOfflineQueue();
+  showToast('Failed entries clear ho gayi!', 'ok');
+}
+
+// Auto-sync when internet comes back
+window.addEventListener('online', () => {
+  showToast('✅ Internet wapas aa gaya! Offline entries sync ho rahi hain...', 'ok');
+  setTimeout(() => syncOfflineQueue(), 1500);
+});
+window.addEventListener('offline', () => {
+  showToast('📴 Offline — Entries queue mein save hongi, sync baad mein hoga', '');
+});
+
+async function apiCallWithOffline(action, body = {}) {
+  // Always inject user_id so Google Sheet User ID column fills correctly
+  if (!body.user_id && USER_NAME) {
+    body = { ...body, user_id: USER_NAME };
+  }
+  if (!navigator.onLine) {
+    const skipQueue = ['getAll','init','get'];
+    if (!skipQueue.includes(action)) {
+      oqAdd(action, body);
+      showToast('📦 Internet nahi — Entry queue mein save ho gayi!', '');
+      updateOfflineBadge();
+      return { queued: true };
+    }
+    throw new Error('Offline — internet connection nahi hai');
+  }
+  return apiCall(action, body);
+}
+
+// ============================================================
+// API CALLS
+// ============================================================
+function setLoading(on) {
+  const lb = document.getElementById('loading-bar');
+  lb.classList.toggle('active', on);
+}
+
+async function apiCall(action, body = {}) {
+  setLoading(true);
+  try {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action, ...body }),
+      headers: { 'Content-Type': 'text/plain' }
+    });
+    const json = await res.json();
+    if (!json.success) throw new Error(json.error || "Server error");
+    // Return json.data if present, else return full json for getAll/init responses
+    if (json.data !== undefined) return json.data;
+    const { success, error, ...rest } = json;
+    return rest;
+  } catch(e) {
+    showToast("❌ Error: " + e.message, "err");
+    throw e;
+  } finally {
+    setLoading(false);
+  }
+}
+
+async function initSheets() {
+  try {
+    await apiCall('init');
+  } catch(e) {
+    console.error('initSheets error:', e.message);
+    showToast('⚠️ Server connect nahi hua: ' + e.message, 'err');
+  }
+}
+
+async function loadAll() {
+  try {
+    const data = await apiCall('getAll');
+    if (!data) throw new Error('No data received from server');
+    DB.trips       = (data.trips       || []).map(normalizeRecord);
+    DB.expenses    = (data.expenses    || []).map(normalizeRecord);
+    DB.vehicles    = (data.vehicles    || []).map(normalizeRecord);
+    DB.documents   = (data.documents   || []).map(normalizeRecord);
+    DB.loans       = (data.loans       || []).map(normalizeRecord);
+    DB.emiPayments = (data.emiPayments || data.emi_payments || data.emipayments || []).map(normalizeRecord);
+    DB.fuelLogs    = (data.fuelLogs    || data.fuel_logs    || data.fuellogs    || []).map(normalizeRecord);
+    updateLastSync();
+    renderAll();
+    populateDvFilters();
+    showToast("✅ Data sync ho gaya!", "ok");
+  } catch(e) {
+    console.error('loadAll error:', e);
+    showToast("❌ Sync error: " + e.message, "err");
+  }
+}
+
+function normalizeRecord(r) {
+  const out = {};
+  Object.keys(r).forEach(k => {
+    // Normalize: lowercase, spaces→underscore, remove special chars
+    const nk = k.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+    out[nk] = r[k];
+    // Also keep original key
+    out[k] = r[k];
+  });
+  // Common aliases for backend field name variations
+  if (!out.number && out.vehicle_number) out.number = out.vehicle_number;
+  if (!out.number && out.vehiclenumber)  out.number = out.vehiclenumber;
+  if (!out.sale_amount && out.saleamount) out.sale_amount = out.saleamount;
+  if (!out.received && out.received_amount) out.received = out.received_amount;
+  if (!out.pending && out.pending_amount) out.pending = out.pending_amount;
+  if (!out.total_expenses && out.totalexpenses) out.total_expenses = out.totalexpenses;
+  if (!out.trip_margin && out.tripmargin) out.trip_margin = out.tripmargin;
+  if (!out.maintenance && out.maint_cost) out.maintenance = out.maint_cost;
+  if (!out.maintenance_reason && out.maint_reason) out.maintenance_reason = out.maint_reason;
+  if (!out.doc_type && out.doctype) out.doc_type = out.doctype;
+  if (!out.expiry_date && out.expirydate) out.expiry_date = out.expirydate;
+  if (!out.loan_id && out.loanid) out.loan_id = out.loanid;
+  if (!out.payment_month && out.paymentmonth) out.payment_month = out.paymentmonth;
+  if (!out.payment_date && out.paymentdate) out.payment_date = out.paymentdate;
+  if (!out.amount_paid && out.amountpaid) out.amount_paid = out.amountpaid;
+  if (!out.payment_mode && out.paymentmode) out.payment_mode = out.paymentmode;
+  if (!out.price_per_liter && out.priceperliter) out.price_per_liter = out.priceperliter;
+  if (!out.total_amount && out.totalamount) out.total_amount = out.totalamount;
+  if (!out.fuel_station && out.fuelstation) out.fuel_station = out.fuelstation;
+  if (!out.emi_amount && out.emiamount) out.emi_amount = out.emiamount;
+  if (!out.total_emis && out.totalemis) out.total_emis = out.totalemis;
+  if (!out.emis_paid && out.emispaid) out.emis_paid = out.emispaid;
+  if (!out.emis_remaining && out.emisremaining) out.emis_remaining = out.emisremaining;
+  if (!out.amount_remaining && out.amountremaining) out.amount_remaining = out.amountremaining;
+  if (!out.progress_pct && out.progress_) out.progress_pct = out.progress_;
+  if (!out.loan_amount && out.loanamount) out.loan_amount = out.loanamount;
+  if (!out.start_date && out.startdate) out.start_date = out.startdate;
+  if (!out.emi_due_day && out.emidueday) out.emi_due_day = out.emidueday;
+  if (!out.created_at && out.createdat) out.created_at = out.createdat;
+  if (!out.user_id && out.userid) out.user_id = out.userid;
+  return out;
+}
+
+function updateLastSync() {
+  const now = new Date();
+  const t = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+  document.getElementById('last-sync').textContent = t;
+  document.getElementById('sb-sync').textContent = t;
+}
+
+// ============================================================
+// COUNTDOWN
+// ============================================================
+function startCountdown() {
+  if (countdownInterval) clearInterval(countdownInterval);
+  countdown = 60;
+  countdownInterval = setInterval(() => {
+    countdown--;
+    document.getElementById('countdown-txt').textContent = countdown + 's';
+    document.getElementById('sb-cd').textContent = '🟢 ' + countdown + 's';
+    if (countdown <= 0) { countdown = 60; loadAll(); }
+  }, 1000);
+}
+
+// ============================================================
+// UTILS
+// ============================================================
+function fmtDate(s) {
+  if (!s) return '';
+  s = String(s).trim();
+  // Handle ISO datetime like "2026-06-06T18:30:00.000Z"
+  if (s.includes('T')) {
+    // Parse as date, add 1 day offset for IST (UTC+5:30 stored as prev day UTC)
+    try {
+      const d = new Date(s);
+      // Add 5.5 hours to convert UTC to IST
+      const ist = new Date(d.getTime() + (5.5 * 60 * 60 * 1000));
+      const dd = String(ist.getUTCDate()).padStart(2,'0');
+      const mm = String(ist.getUTCMonth()+1).padStart(2,'0');
+      const yyyy = ist.getUTCFullYear();
+      return `${dd}/${mm}/${yyyy}`;
+    } catch(e) {}
+  }
+  // Already DD/MM/YYYY
+  if (s.includes('/') && s.split('/').length === 3) return s;
+  // YYYY-MM-DD
+  const parts = s.split('-');
+  if (parts.length === 3 && parts[0].length === 4) return `${parts[2]}/${parts[1]}/${parts[0]}`;
+  return s;
+}
+
+// Format payment month: "2025-12" or "2025-12-31T..." -> "Dec 2025"
+function fmtPayMonth(s) {
+  if (!s) return '';
+  s = String(s).trim();
+  // If it's an ISO datetime, extract year-month
+  if (s.includes('T')) s = parseToISO(s).slice(0,7);
+  // If "YYYY-MM" format
+  if (/^\d{4}-\d{2}$/.test(s)) {
+    const [y, m] = s.split('-');
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return `${months[parseInt(m)-1]} ${y}`;
+  }
+  // If "June 2026" already formatted, return as-is
+  return s;
+}
+
+// Parse date string to YYYY-MM-DD for comparisons
+function parseToISO(s) {
+  if (!s) return '';
+  s = String(s).trim();
+  if (s.includes('T')) {
+    try {
+      const d = new Date(s);
+      const ist = new Date(d.getTime() + (5.5*60*60*1000));
+      return `${ist.getUTCFullYear()}-${String(ist.getUTCMonth()+1).padStart(2,'0')}-${String(ist.getUTCDate()).padStart(2,'0')}`;
+    } catch(e) {}
+  }
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  if (s.includes('/')) { const p=s.split('/'); if(p.length===3) return `${p[2]}-${p[1]}-${p[0]}`; }
+  return s;
+}
+
+function n(id) { const el = document.getElementById(id); return el ? el.value : ''; }
+function set(id, val) { const el = document.getElementById(id); if(el) el.value = val || ''; }
+
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + (type || '');
+  setTimeout(() => t.className = 'toast', 3000);
+}
+
+function openImgModal(src) {
+  document.getElementById('modal-img').src = src;
+  document.getElementById('img-modal').classList.add('open');
+}
+
+function previewImg(fileId, prevId, dataId) {
+  const file = document.getElementById(fileId).files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const prev = document.getElementById(prevId);
+    prev.src = e.target.result;
+    prev.style.display = 'inline-block';
+    document.getElementById(dataId).value = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+// ============================================================
+// MOBILE SIDEBAR TOGGLE
+// ============================================================
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('open');
+}
+
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('open');
+}
+
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (el) el.classList.add('active');
+  // Auto-close sidebar on mobile after nav
+  if (window.innerWidth <= 768) closeSidebar();
+  renderPage(id);
+}
+
+function renderPage(id) {
+  if (id === 'dashboard') renderDashboard();
+  else if (id === 'trip') renderTrips();
+  else if (id === 'expenses') renderExpenses();
+  else if (id === 'monthly') renderMonthly();
+  else if (id === 'charts') renderCharts();
+  else if (id === 'reminders') renderReminders();
+  else if (id === 'vehicles') renderVehicles();
+  else if (id === 'expsearch') initExpSearch();
+  else if (id === 'docexpiry') renderDocs();
+  else if (id === 'emi') renderEMI();
+  else if (id === 'fuel') renderFuel();
+  else if (id === 'sheets') renderSheets();
+}
+
+function renderAll() {
+  populateVehicleSelects();
+  renderDashboard();
+  renderTrips();
+  renderExpenses();
+  renderMonthly();
+  renderCharts();
+  renderReminders();
+  renderVehicles();
+  renderDocs();
+  renderEMI();
+  renderFuel();
+  renderSheets();
+}
+
+// ============================================================
+// VEHICLE SELECTS
+// ============================================================
+function populateVehicleSelects() {
+  const selects = ['t-vehicle','d-vehicle','l-vehicle','f-vehicle','mr-vehicle','rem-vehicle','es-vehicle','e-vehicle'];
+  selects.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const isFilter = ['mr-vehicle','rem-vehicle'].includes(id);
+    const cur = el.value;
+    const isExpense = id === 'e-vehicle';
+    el.innerHTML = isFilter ? '<option value="all">Saare Vehicles</option>' : isExpense ? '<option value="">— General / Koi vehicle nahi —</option>' : '<option value="">Vehicle select karein</option>';
+    DB.vehicles.forEach(v => { const o = document.createElement('option'); o.value = v.number; o.textContent = v.number; el.appendChild(o); });
+    if (cur) el.value = cur;
+  });
+  // EMI loan selects
+  const loanSel = document.getElementById('ep-loan');
+  if (loanSel) {
+    const cur = loanSel.value;
+    loanSel.innerHTML = '<option value="">Loan select karein</option>';
+    DB.loans.forEach(l => { const o = document.createElement('option'); o.value = l.id; o.textContent = `${l.vehicle} - ${l.bank}`; loanSel.appendChild(o); });
+    if (cur) loanSel.value = cur;
+  }
+}
+
+// ============================================================
+// DASHBOARD
+// ============================================================
+function onViewModeChange() {
+  const mode = n('dash-view-mode');
+  document.getElementById('dash-month-wrap').style.display   = mode==='monthly'    ? '' : 'none';
+  document.getElementById('dash-quarter-wrap').style.display = mode==='quarterly'  ? '' : 'none';
+  document.getElementById('dash-half-wrap').style.display    = mode==='halfyearly' ? '' : 'none';
+  document.getElementById('dash-year-wrap').style.display    = mode==='yearly'     ? '' : 'none';
+  // Populate year select
+  if (mode==='yearly') {
+    const yearSel = document.getElementById('dash-year');
+    const years = [...new Set(DB.trips.map(t=>parseToISO(t.date||'').slice(0,4)))].filter(Boolean).sort().reverse();
+    const curYear = new Date().getFullYear().toString();
+    if (!years.includes(curYear)) years.unshift(curYear);
+    yearSel.innerHTML = years.map(y=>`<option value="${y}">${y}</option>`).join('');
+  }
+  renderDashboard();
+}
+
+// Get date filter months array for current view mode
+function getDashMonths() {
+  const mode = n('dash-view-mode') || 'monthly';
+  const curYear = new Date().getFullYear().toString();
+  if (mode === 'monthly') {
+    const m = n('dash-month') || new Date().toISOString().slice(0,7);
+    return { months: [m], label: m, mode };
+  }
+  if (mode === 'quarterly') {
+    const q = n('dash-quarter') || 'Q1';
+    const year = curYear;
+    const qMap = { Q1:['01','02','03'], Q2:['04','05','06'], Q3:['07','08','09'], Q4:['10','11','12'] };
+    return { months: qMap[q].map(m=>year+'-'+m), label: q+' '+year, mode };
+  }
+  if (mode === 'halfyearly') {
+    const h = n('dash-half') || 'H1';
+    const year = curYear;
+    const hMap = { H1:['01','02','03','04','05','06'], H2:['07','08','09','10','11','12'] };
+    return { months: hMap[h].map(m=>year+'-'+m), label: h+' '+year, mode };
+  }
+  if (mode === 'yearly') {
+    const year = n('dash-year') || curYear;
+    const months = Array.from({length:12},(_,i)=>year+'-'+(i+1).toString().padStart(2,'0'));
+    return { months, label: 'Year '+year, mode };
+  }
+  return { months: [], label: '', mode };
+}
+
+function renderDashboard() {
+  const { months, label } = getDashMonths();
+  const trips = DB.trips.filter(t => months.some(m => parseToISO(t.date||'').startsWith(m)));
+  
+  const sum = (arr, key) => arr.reduce((s,r) => s + (parseFloat(r[key]||r[key.replace('_',''||'')]||0)||0), 0);
+  const saleAmt = sum(trips, 'sale_amount');
+  const received = sum(trips, 'received');
+  const pending = sum(trips, 'pending');
+  const maint = sum(trips, 'maintenance');
+  const tripExp = ['diesel','driver','labour','urea','toll','loading'].reduce((s,k) => s + sum(trips,k), 0);
+  const otherExp = DB.expenses.filter(e => months.some(m=>(e.month||'').startsWith(m))).reduce((s,e)=>s+(parseFloat(e.amount)||0),0);
+  const netProfit = received - tripExp - maint - otherExp;
+
+  document.getElementById('dash-stats').innerHTML = [
+    ['Total Vehicles', DB.vehicles.length, 'Active fleet', '#6366f1'],
+    ['Total Sale', '₹'+saleAmt.toLocaleString(), label, '#3b82f6'],
+    ['Received', '₹'+received.toLocaleString(), 'Payments collected', '#10b981'],
+    ['Pending', '₹'+pending.toLocaleString(), 'Outstanding', '#f59e0b'],
+    ['Maintenance', '₹'+maint.toLocaleString(), 'Repair costs', '#8b5cf6'],
+    ['Trip Expenses', '₹'+tripExp.toLocaleString(), 'Fuel, toll, driver', '#f97316'],
+    ['Other Expenses', '₹'+otherExp.toLocaleString(), 'Miscellaneous', '#ec4899'],
+    ['Net Profit', '₹'+netProfit.toLocaleString(), 'After all costs', netProfit>=0?'#10b981':'#ef4444'],
+  ].map(([l,v,s,c]) => `<div class="stat-card"><div class="stat-label">${l}</div><div class="stat-value" style="color:${c};font-size:15px">${v}</div><div class="stat-sub">${s}</div></div>`).join('');
+
+  // Recent trips — sorted desc, show up to 20
+  const sorted = [...trips].sort((a,b) => parseToISO(b.date||'').localeCompare(parseToISO(a.date||''))).slice(0,20);
+  document.getElementById('dash-trips-body').innerHTML = sorted.length ? sorted.map(t => {
+    const exp = ['diesel','driver','labour','urea','toll','loading','maintenance'].reduce((s,k)=>s+(parseFloat(t[k])||0),0);
+    const margin = parseFloat(t.trip_margin)||parseFloat(t.tripmargin)||0;
+    return `<tr>
+      <td>${fmtDate(t.date)}</td>
+      <td><span class="tag tag-blue">${t.vehicle||''}</span></td>
+      <td style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t.route||''}</td>
+      <td style="color:#2563eb;font-weight:600">₹${parseFloat(t.sale_amount||0).toLocaleString()}</td>
+      <td class="green">₹${parseFloat(t.received||0).toLocaleString()}</td>
+      <td style="color:#dc2626;font-weight:600">₹${parseFloat(t.pending||0).toLocaleString()}</td>
+      <td>₹${exp.toLocaleString()}</td>
+      <td style="color:${margin>=0?'#16a34a':'#dc2626'};font-weight:700">₹${margin.toLocaleString()}</td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="8"><div class="empty"><div class="eico">🚛</div><div class="etxt">Is period mein koi trip nahi</div></div></td></tr>`;
+}
+
+// ============================================================
+// TRIPS
+// ============================================================
+function calcTrip() {
+  const sale = parseFloat(n('t-sale'))||0;
+  const recd = parseFloat(n('t-received'))||0;
+  const pending = sale - recd;
+  set('t-pending', '₹ ' + pending);
+  const exp = ['t-loading','t-diesel','t-driver','t-labour','t-urea','t-toll','t-maint'].reduce((s,id)=>s+(parseFloat(n(id))||0),0);
+  set('t-total-exp', '₹ ' + exp);
+  set('t-margin', '₹ ' + (recd - exp));
+}
+
+async function saveTrip() {
+  if (!n('t-vehicle') || !n('t-date')) { alert('Vehicle aur date zaroori hai!'); return; }
+  const sale = parseFloat(n('t-sale'))||0;
+  const recd = parseFloat(n('t-received'))||0;
+  const exp = ['t-loading','t-diesel','t-driver','t-labour','t-urea','t-toll','t-maint'].reduce((s,id)=>s+(parseFloat(n(id))||0),0);
+  const record = {
+    date: n('t-date'), vehicle: n('t-vehicle'), route: n('t-route'),
+    'sale_amount': sale, received: recd, pending: sale-recd, rate: n('t-rate'),
+    loading: n('t-loading'), diesel: n('t-diesel'), driver: n('t-driver'),
+    labour: n('t-labour'), urea: n('t-urea'), toll: n('t-toll'),
+    'maintenance_reason': n('t-mreason'), maintenance: n('t-maint'),
+    'client_phone': n('t-phone'), 'total_expenses': exp, 'trip_margin': recd-exp,
+    image: n('t-img-data')
+  };
+  const editId = n('t-edit-id');
+  if (editId) { const r = await apiCallWithOffline('update', { sheet:'trips', id:editId, record }); showToast(r&&r.queued?'📦 Queued — sync hoga baad mein!':'Trip update ho gayi!','ok'); }
+  else { const r = await apiCallWithOffline('add', { sheet:'trips', record }); showToast(r&&r.queued?'📦 Queued — sync hoga baad mein!':'Trip save ho gayi!','ok'); }
+  resetTrip();
+  if (navigator.onLine) await loadAll();
+}
+
+function resetTrip() {
+  ['t-vehicle','t-route','t-sale','t-received','t-rate','t-loading','t-diesel','t-driver','t-labour','t-urea','t-toll','t-mreason','t-maint','t-phone','t-edit-id','t-img-data'].forEach(id=>set(id,''));
+  set('t-date', new Date().toISOString().split('T')[0]);
+  set('t-pending',''); set('t-total-exp',''); set('t-margin','');
+  document.getElementById('t-img-prev').style.display='none';
+  document.getElementById('trip-btn-txt').textContent='Save Trip';
+}
+
+function editTrip(id) {
+  const t = DB.trips.find(r=>r.id==id); if(!t) return;
+  set('t-date',t.date); set('t-vehicle',t.vehicle); set('t-route',t.route);
+  set('t-sale',t.sale_amount); set('t-received',t.received); set('t-rate',t.rate);
+  set('t-loading',t.loading); set('t-diesel',t.diesel); set('t-driver',t.driver);
+  set('t-labour',t.labour); set('t-urea',t.urea); set('t-toll',t.toll);
+  set('t-mreason',t.maintenance_reason); set('t-maint',t.maintenance);
+  set('t-phone',t.client_phone); set('t-edit-id',id);
+  if(t.image){const pr=document.getElementById('t-img-prev');pr.src=t.image;pr.style.display='inline-block';set('t-img-data',t.image);}
+  document.getElementById('trip-btn-txt').textContent='Update Trip';
+  calcTrip();
+  showPage('trip', document.querySelectorAll('.nav-item')[1]);
+}
+
+function renderTrips() {
+  const sorted = [...DB.trips].sort((a,b)=>parseToISO(b.date||'').localeCompare(parseToISO(a.date||'')));
+  document.getElementById('trips-count').textContent = sorted.length + ' records';
+  document.getElementById('trips-body').innerHTML = sorted.length ? sorted.map(t => {
+    const margin = parseFloat(t.trip_margin||t.tripmargin||0);
+    return `<tr>
+      <td style="white-space:nowrap">${fmtDate(t.date)}</td>
+      <td><span class="tag tag-blue">${t.vehicle||''}</span></td>
+      <td style="max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t.route||''}</td>
+      <td style="color:#2563eb;font-weight:600">₹${parseFloat(t.sale_amount||0).toLocaleString()}</td>
+      <td class="green">₹${parseFloat(t.received||0).toLocaleString()}</td>
+      <td style="color:#dc2626;font-weight:600">₹${parseFloat(t.pending||0).toLocaleString()}</td>
+      <td>₹${parseFloat(t.diesel||0).toLocaleString()}</td>
+      <td>₹${parseFloat(t.driver||0).toLocaleString()}</td>
+      <td>₹${parseFloat(t.toll||0).toLocaleString()}</td>
+      <td>₹${parseFloat(t.maintenance||0).toLocaleString()}</td>
+      <td>₹${parseFloat(t.total_expenses||t.totalexpenses||0).toLocaleString()}</td>
+      <td style="color:${margin>=0?'#16a34a':'#dc2626'};font-weight:700">₹${margin.toLocaleString()}</td>
+      <td>${t.image?`<img src="${t.image}" class="img-thumb" onclick="openImgModal(this.src)" />`:'--'}</td>
+      <td>
+        <button class="btn btn-sm" style="background:#fef3c7;color:#92400e;margin-right:4px" onclick="editTrip('${t.id}')">✏</button>
+        <button class="btn btn-sm btn-danger" onclick="delRec('trips','${t.id}')">🗑</button>
+      </td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="14"><div class="empty"><div class="etxt">Koi trip nahi abhi</div></div></td></tr>`;
+}
+
+// ============================================================
+// EXPENSES
+// ============================================================
+async function saveExpense() {
+  if (!n('e-type') || !n('e-amount')) { alert('Type aur amount zaroori hai!'); return; }
+  const record = { date:n('e-date'), month:n('e-month'), vehicle:n('e-vehicle'), type:n('e-type'), description:n('e-desc'), amount:n('e-amount'), image:n('e-img-data') };
+  const editId = n('e-edit-id');
+  if (editId) { const r = await apiCallWithOffline('update',{sheet:'expenses',id:editId,record}); showToast(r&&r.queued?'📦 Queued!':'Expense update!','ok'); }
+  else { const r = await apiCallWithOffline('add',{sheet:'expenses',record}); showToast(r&&r.queued?'📦 Queued — sync hoga baad mein!':'Expense save ho gaya!','ok'); }
+  resetExpense(); if (navigator.onLine) await loadAll();
+}
+
+function resetExpense() {
+  ['e-vehicle','e-type','e-amount','e-desc','e-edit-id','e-img-data'].forEach(id=>set(id,''));
+  set('e-date',new Date().toISOString().split('T')[0]);
+  set('e-month',new Date().toISOString().slice(0,7));
+  document.getElementById('e-img-prev').style.display='none';
+  document.getElementById('exp-btn-txt').textContent='Save';
+}
+
+function editExpense(id) {
+  const e = DB.expenses.find(r=>r.id==id); if(!e) return;
+  set('e-date',e.date); set('e-month',e.month); set('e-vehicle',e.vehicle||''); set('e-type',e.type); set('e-desc',e.description); set('e-amount',e.amount); set('e-edit-id',id);
+  if(e.image){const pr=document.getElementById('e-img-prev');pr.src=e.image;pr.style.display='inline-block';set('e-img-data',e.image);}
+  document.getElementById('exp-btn-txt').textContent='Update';
+  showPage('expenses',document.querySelectorAll('.nav-item')[2]);
+}
+
+function renderExpenses() {
+  const sorted = [...DB.expenses].sort((a,b)=>parseToISO(b.date||'').localeCompare(parseToISO(a.date||'')));
+  const total = sorted.reduce((s,e)=>s+(parseFloat(e.amount)||0),0);
+  document.getElementById('exp-count').textContent = `${sorted.length} records | Total: ₹${total.toLocaleString()}`;
+  const tagCls = t => t&&t.includes('Repair')?'tag-yellow':t&&t.includes('House')?'tag-blue':t&&t.includes('Salary')?'tag-green':'tag-gray';
+  document.getElementById('exp-body').innerHTML = sorted.length ? sorted.map(e => `<tr>
+    <td style="white-space:nowrap">${fmtDate(e.date)}</td>
+    <td>${e.vehicle?`<span class="tag tag-blue">${e.vehicle}</span>`:'<span style="color:#9ca3af;font-size:11px">General</span>'}</td>
+    <td>${e.month||''}</td>
+    <td><span class="tag ${tagCls(e.type)}">${e.type||''}</span></td>
+    <td style="max-width:200px">${e.description||''}</td>
+    <td class="red">₹${parseFloat(e.amount||0).toLocaleString()}</td>
+    <td>${e.image?`<img src="${e.image}" class="img-thumb" onclick="openImgModal(this.src)" />`:'--'}</td>
+    <td>
+      <button class="btn btn-sm" style="background:#fef3c7;color:#92400e;margin-right:4px" onclick="editExpense('${e.id}')">✏</button>
+      <button class="btn btn-sm btn-danger" onclick="delRec('expenses','${e.id}')">🗑</button>
+    </td>
+  </tr>`).join('') : `<tr><td colspan="8"><div class="empty"><div class="etxt">Koi expense nahi</div></div></td></tr>`;
+}
+
+// ============================================================
+// MONTHLY REPORT
+// ============================================================
+function renderMonthly() {
+  const month = n('mr-month') || new Date().toISOString().slice(0,7);
+  const vf = n('mr-vehicle');
+  const trips = DB.trips.filter(t=>parseToISO(t.date||'').startsWith(month)&&(vf==='all'||t.vehicle===vf));
+  const expenses = DB.expenses.filter(e=>(e.month||'').startsWith(month));
+  
+  const sum = (arr,k) => arr.reduce((s,r)=>s+(parseFloat(r[k])||0),0);
+  const sale=sum(trips,'sale_amount'), received=sum(trips,'received'), pending=sum(trips,'pending');
+  const margin=sum(trips,'trip_margin')||sum(trips,'tripmargin');
+  const otherExp=sum(expenses,'amount');
+  const diesel=sum(trips,'diesel'),driver=sum(trips,'driver'),toll=sum(trips,'toll');
+  const loading=sum(trips,'loading'),labour=sum(trips,'labour'),urea=sum(trips,'urea'),maint=sum(trips,'maintenance');
+  const finalProfit = received - diesel - driver - toll - loading - labour - urea - maint - otherExp;
+  
+  document.getElementById('monthly-content').innerHTML = `
+    <div class="report-grid">
+      <div class="card rp-summary">
+        <div style="display:flex;gap:20px;flex-wrap:wrap">
+          <div><div class="rp-label">TRIPS</div><div class="rp-big">${trips.length}</div></div>
+          <div><div class="rp-label">VEHICLES</div><div class="rp-big">${new Set(trips.map(t=>t.vehicle)).size}</div></div>
+          <div><div class="rp-label">FINAL PROFIT</div><div class="rp-big" style="color:${finalProfit>=0?'#10b981':'#ef4444'}">₹${finalProfit.toLocaleString()}</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-weight:700;margin-bottom:12px">💰 Revenue</div>
+        ${[['Total Sales',sale],['Received',received,'green'],['Pending',pending,'amber'],['Trip Margin',margin],['Other Expenses',otherExp,'red'],['Final Profit',finalProfit,finalProfit>=0?'green':'red']].map(([l,v,c])=>`
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f3f4f6;font-size:13px">
+            <span style="${l==='Final Profit'?'font-weight:700':''}">${l}</span>
+            <span class="${c||''}" style="${l==='Final Profit'?'font-weight:700':''}">₹${v.toLocaleString()}</span>
+          </div>`).join('')}
+      </div>
+      <div class="card">
+        <div style="font-weight:700;margin-bottom:12px">🔧 Trip Expenses</div>
+        ${[['Diesel',diesel],['Driver',driver],['Toll',toll],['Loading',loading],['Labour',labour],['Urea',urea],['Maintenance',maint]].map(([l,v])=>`
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f3f4f6;font-size:13px">
+            <span>${l}</span><span>₹${v.toLocaleString()}</span>
+          </div>`).join('')}
+      </div>
+      <div class="card">
+        <div style="font-weight:700;margin-bottom:12px">📋 Other Expenses</div>
+        ${expenses.length ? expenses.map(e=>`
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f3f4f6;font-size:12px">
+            <span>${e.type||''}</span><span class="red">₹${parseFloat(e.amount||0).toLocaleString()}</span>
+          </div>`).join('') : '<div style="color:#6b7280;font-size:13px;padding:8px 0">Is month koi extra expense nahi</div>'}
+        <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:13px;font-weight:700;border-top:2px solid #e5e7eb;margin-top:4px">
+          <span>Total</span><span class="red">₹${otherExp.toLocaleString()}</span>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ============================================================
+// CHARTS
+// ============================================================
+function renderCharts() {
+  const months = [...new Set(DB.trips.map(t=>parseToISO(t.date||'').slice(0,7)))].filter(Boolean).sort().reverse().slice(0,6).reverse();
+  const maxP = Math.max(...months.map(m=>Math.abs(DB.trips.filter(t=>(t.date||'').startsWith(m)).reduce((s,t)=>s+(parseFloat(t.trip_margin||t.tripmargin||0)),0))),1);
+  
+  const barProfit = months.length ? `<div class="bar-chart">${months.map(m=>{
+    const p=DB.trips.filter(t=>parseToISO(t.date||'').startsWith(m)).reduce((s,t)=>s+(parseFloat(t.trip_margin||t.tripmargin||0)),0);
+    const h=Math.max((Math.abs(p)/maxP)*95,2);
+    return `<div class="bar-col"><div class="bar-val">₹${(p/1000).toFixed(0)}k</div><div class="bar-rect" style="height:${h}%;background:${p>=0?'#10b981':'#ef4444'}"></div><div class="bar-lbl">${m.slice(5)}</div></div>`;
+  }).join('')}</div>` : '<div class="empty"><div class="etxt">Data nahi abhi</div></div>';
+
+  document.getElementById('charts-content').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="card"><div class="card-title">Monthly Profit/Loss</div>${barProfit}</div>
+      <div class="card">
+        <div class="card-title">Vehicle-wise Performance</div>
+        ${DB.vehicles.length ? DB.vehicles.map(v=>{
+          const cnt=DB.trips.filter(t=>t.vehicle===v.number).length;
+          const prf=DB.trips.filter(t=>t.vehicle===v.number).reduce((s,t)=>s+(parseFloat(t.trip_margin||t.tripmargin||0)),0);
+          return `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:13px">
+            <span class="tag tag-blue">${v.number}</span><span>${cnt} trips</span>
+            <span class="${prf>=0?'green':'red'}">₹${prf.toLocaleString()}</span>
+          </div>`;
+        }).join('') : '<div class="empty"><div class="etxt">Koi vehicle nahi</div></div>'}
+      </div>
+      <div class="card">
+        <div class="card-title">Expense Breakdown</div>
+        ${[['Diesel','#f97316'],['Driver','#6366f1'],['Toll','#10b981'],['Labour','#f59e0b'],['Maintenance','#ef4444']].map(([k,c])=>{
+          const v=DB.trips.reduce((s,t)=>s+(parseFloat(t[k.toLowerCase()])||0),0);
+          const tot=DB.trips.reduce((s,t)=>s+(parseFloat(t.diesel||0))+(parseFloat(t.driver||0))+(parseFloat(t.toll||0))+(parseFloat(t.labour||0))+(parseFloat(t.maintenance||0)),0)||1;
+          const pct=((v/tot)*100).toFixed(1);
+          return `<div style="margin-bottom:8px">
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px"><span><b>${k}</b></span><span>₹${v.toLocaleString()} (${pct}%)</span></div>
+            <div style="height:6px;background:#f3f4f6;border-radius:3px"><div style="height:100%;width:${pct}%;background:${c};border-radius:3px"></div></div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="card">
+        <div class="card-title">Fuel Usage by Vehicle</div>
+        ${DB.vehicles.map(v=>{
+          const liters=DB.fuelLogs.filter(f=>f.vehicle===v.number).reduce((s,f)=>s+(parseFloat(f.liters)||0),0);
+          const amt=DB.fuelLogs.filter(f=>f.vehicle===v.number).reduce((s,f)=>s+(parseFloat(f.total_amount||f.totalamount||0)),0);
+          return `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:13px">
+            <span class="tag tag-blue">${v.number}</span><span>${liters.toFixed(0)}L</span><span class="red">₹${amt.toLocaleString()}</span>
+          </div>`;
+        }).join('') || '<div class="empty"><div class="etxt">Fuel data nahi</div></div>'}
+      </div>
+    </div>`;
+}
+
+// ============================================================
+// REMINDERS
+// ============================================================
+function renderReminders() {
+  const vf = n('rem-vehicle');
+  const pending = DB.trips.filter(t=>(parseFloat(t.pending)||0)>0&&(vf==='all'||t.vehicle===vf));
+  document.getElementById('rem-content').innerHTML = pending.length ? `<table><thead><tr><th>Date</th><th>Vehicle</th><th>Route</th><th>Sale</th><th>Received</th><th>Pending</th><th>Client</th><th>WhatsApp</th></tr></thead><tbody>${pending.map(t=>`<tr>
+    <td>${fmtDate(t.date)}</td><td><span class="tag tag-blue">${t.vehicle||''}</span></td><td>${t.route||''}</td>
+    <td style="color:#2563eb;font-weight:600">₹${parseFloat(t.sale_amount||0).toLocaleString()}</td>
+    <td class="green">₹${parseFloat(t.received||0).toLocaleString()}</td>
+    <td style="color:#dc2626;font-weight:600">₹${parseFloat(t.pending||0).toLocaleString()}</td>
+    <td>${t.client_phone||''}</td>
+    <td><a href="https://wa.me/${(t.client_phone||'').replace(/\D/g,'')}?text=Dear%20Sir%2C%20${encodeURIComponent(t.route||'')}%20trip%20ka%20payment%20₹${t.pending}%20pending%20hai." target="_blank"><button class="btn btn-success btn-sm">📲 Send</button></a></td>
+  </tr>`).join('')}</tbody></table>`
+  : `<div class="empty"><div class="eico">✅</div><div class="etxt">Koi pending payment nahi!</div></div>`;
+}
+
+// ============================================================
+// VEHICLES
+// ============================================================
+async function saveVehicle() {
+  if (!n('v-number')) { alert('Vehicle number zaroori hai!'); return; }
+  const editId = n('v-edit-id');
+  const record = { number: n('v-number').toUpperCase(), type: n('v-type'), driver: n('v-driver') };
+  if (editId) {
+    const r = await apiCallWithOffline('update', { sheet:'vehicles', id: editId, record });
+    showToast(r&&r.queued?'📦 Queued!':'Vehicle update ho gaya!', 'ok');
+  } else {
+    const r = await apiCallWithOffline('add', { sheet:'vehicles', record });
+    if (r && r.queued) {
+      showToast('📦 Offline — queue mein save ho gaya!', '');
+    } else if (r) {
+      showToast('✅ Vehicle add ho gaya!', 'ok');
+    }
+  }
+  cancelEditVehicle();
+  if (navigator.onLine) await loadAll();
+}
+
+function editVehicle(id) {
+  const v = DB.vehicles.find(x => x.id === id); if (!v) return;
+  set('v-number', v.number); set('v-type', v.type); set('v-driver', v.driver); set('v-edit-id', id);
+  document.getElementById('v-save-btn').textContent = '💾 Update Vehicle';
+  document.getElementById('v-save-btn').className = 'btn btn-success btn-sm';
+  document.getElementById('v-cancel-btn').style.display = '';
+  document.getElementById('v-edit-banner').style.display = '';
+  // Scroll to form
+  document.getElementById('v-number').focus();
+  document.getElementById('v-number').scrollIntoView({ behavior:'smooth', block:'center' });
+}
+
+function cancelEditVehicle() {
+  set('v-number',''); set('v-type',''); set('v-driver',''); set('v-edit-id','');
+  document.getElementById('v-save-btn').textContent = '➕ Add Vehicle';
+  document.getElementById('v-save-btn').className = 'btn btn-primary btn-sm';
+  document.getElementById('v-cancel-btn').style.display = 'none';
+  document.getElementById('v-edit-banner').style.display = 'none';
+}
+
+function renderVehicles() {
+  document.getElementById('vehicles-body').innerHTML = DB.vehicles.length ? DB.vehicles.map(v=>`<tr>
+    <td><b>${v.number||''}</b></td>
+    <td>${v.type||''}</td>
+    <td>${v.driver||''}</td>
+    <td>${DB.trips.filter(t=>t.vehicle===v.number).length}</td>
+    <td>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-sm" style="background:#fef3c7;color:#92400e" onclick="editVehicle('${v.id}')">✏️ Edit</button>
+        <button class="btn btn-sm btn-danger" onclick="delRec('vehicles','${v.id}')">🗑</button>
+      </div>
+    </td>
+  </tr>`).join('') : `<tr><td colspan="5"><div class="empty"><div class="etxt">Koi vehicle nahi</div></div></td></tr>`;
+}
+
+// ============================================================
+// DOC EXPIRY
+// ============================================================
+async function saveDoc() {
+  if (!n('d-vehicle')||!n('d-type')||!n('d-expiry')) { alert('Zaroori fields fill karein!'); return; }
+  const r = await apiCallWithOffline('add', { sheet:'documents', record:{vehicle:n('d-vehicle'),'doc_type':n('d-type'),'expiry_date':n('d-expiry'),notes:n('d-notes')} });
+  set('d-vehicle',''); set('d-type',''); set('d-expiry',''); set('d-notes','');
+  showToast(r&&r.queued?'📦 Queued — sync hoga baad mein!':'Document add ho gaya!','ok');
+  if (navigator.onLine) await loadAll();
+}
+
+function renderDocs() {
+  const sorted = [...DB.documents].sort((a,b)=>(b.expiry_date||b.expirydate||'').localeCompare(a.expiry_date||a.expirydate||''));
+  document.getElementById('docs-body').innerHTML = sorted.length ? sorted.map(d=>{
+    const exp = d.expiry_date||d.expirydate||'';
+    const days = exp ? Math.floor((new Date(exp)-new Date())/86400000) : null;
+    const tag = days===null?'<span class="tag tag-gray">Unknown</span>':days<0?'<span class="tag tag-red">Expired</span>':days<=30?`<span class="tag tag-yellow">${days}d left</span>`:`<span class="tag tag-green">${days}d left</span>`;
+    return `<tr><td><span class="tag tag-blue">${d.vehicle||''}</span></td><td><b>${d.doc_type||d.doctype||''}</b></td><td>${fmtDate(exp)}</td><td>${tag}</td><td>${d.notes||''}</td><td><button class="btn btn-sm btn-danger" onclick="delRec('documents','${d.id}')">🗑</button></td></tr>`;
+  }).join('') : `<tr><td colspan="6"><div class="empty"><div class="etxt">Koi document nahi</div></div></td></tr>`;
+}
+
+// ============================================================
+// EMI TRACKER
+// ============================================================
+async function saveLoan() {
+  if (!n('l-vehicle')||!n('l-amount')) { alert('Vehicle aur loan amount zaroori!'); return; }
+  const principal = parseFloat(n('l-amount'))||0;
+  const rate = parseFloat(n('l-rate'))||0;
+  const tenure = parseInt(n('l-total'))||36;
+  // If EMI not entered but rate given, auto-calculate
+  let emiAmt = parseFloat(n('l-emi'))||0;
+  if (!emiAmt && rate > 0) {
+    const r = rate/12/100;
+    emiAmt = Math.round(principal * r * Math.pow(1+r,tenure) / (Math.pow(1+r,tenure)-1));
+  }
+  const totalInterest = emiAmt > 0 ? (emiAmt * tenure - principal) : 0;
+  const rLoan = await apiCallWithOffline('add',{sheet:'loans',record:{
+    vehicle:n('l-vehicle'), bank:n('l-bank'),
+    'loan_amount':principal, 'interest_rate':rate,
+    'total_interest': Math.round(totalInterest),
+    'total_payable': Math.round(principal + totalInterest),
+    'emi_amount':emiAmt, 'total_emis':tenure,
+    'emis_paid':n('l-paid'), 'start_date':n('l-start'), 'emi_due_day':n('l-due')
+  }});
+  showToast(rLoan&&rLoan.queued?'📦 Queued — sync hoga baad mein!':'Loan add ho gaya!','ok');
+  // Reset form
+  ['l-bank','l-amount','l-rate','l-emi','l-paid','l-start'].forEach(id=>set(id,''));
+  set('l-total','59'); set('l-due','5');
+  document.getElementById('loan-preview').style.display='none';
+  document.getElementById('amort-section').style.display='none';
+  document.getElementById('amort-toggle-btn').style.display='none';
+  if (navigator.onLine) await loadAll();
+}
+
+async function saveEmiPayment() {
+  if (!n('ep-loan')||!n('ep-amount')) { alert('Loan select karein aur amount dalein!'); return; }
+  const record = {
+    'loan_id':n('ep-loan'), 'payment_month':n('ep-month'),
+    'payment_date':n('ep-date'), 'amount_paid':n('ep-amount'),
+    'payment_mode':n('ep-mode'), notes:n('ep-notes'), image:n('ep-img-data')
+  };
+  const editId = n('ep-edit-id');
+  if (editId) {
+    const r = await apiCallWithOffline('update', { sheet:'emiPayments', id: editId, record });
+    showToast(r&&r.queued?'📦 Queued!':'EMI payment update ho gayi!', 'ok');
+  } else {
+    const r = await apiCallWithOffline('add', { sheet:'emiPayments', record });
+    showToast(r&&r.queued?'📦 Queued — sync hoga baad mein!':'EMI mark paid!', 'ok');
+  }
+  cancelEmiEdit();
+  if (navigator.onLine) await loadAll();
+}
+
+function cancelEmiEdit() {
+  set('ep-amount',''); set('ep-notes',''); set('ep-img-data',''); set('ep-edit-id','');
+  set('ep-mode','');
+  set('ep-date', new Date().toISOString().split('T')[0]);
+  set('ep-month', new Date().toISOString().slice(0,7));
+  document.getElementById('ep-img-prev').style.display='none';
+  document.getElementById('ep-cancel-btn').style.display='none';
+  const btn = document.querySelector('[onclick="saveEmiPayment()"]');
+  if (btn) { btn.textContent = '✅ EMI Paid Mark Karein'; btn.style.background = ''; }
+  document.getElementById('emi-payment-detail').style.display='none';
+}
+
+
+
+
+
+// ============================================================
+// FUEL LOG
+// ============================================================
+function calcFuel() {
+  const total = (parseFloat(n('f-liters'))||0) * (parseFloat(n('f-price'))||0);
+  set('f-total','₹ ' + total.toFixed(2));
+}
+
+async function saveFuel() {
+  if (!n('f-vehicle')||!n('f-liters')) { alert('Vehicle aur liters zaroori!'); return; }
+  const total = (parseFloat(n('f-liters'))||0)*(parseFloat(n('f-price'))||0);
+  const record = {date:n('f-date'),vehicle:n('f-vehicle'),liters:n('f-liters'),'price_per_liter':n('f-price'),'total_amount':total,odometer:n('f-odo'),'fuel_station':n('f-station'),'payment_mode':n('f-mode'),notes:n('f-notes'),image:n('f-img-data')};
+  const editId = n('f-edit-id');
+  if (editId) { const r = await apiCallWithOffline('update',{sheet:'fuelLogs',id:editId,record}); showToast(r&&r.queued?'📦 Queued!':'Fuel update!','ok'); }
+  else { const r = await apiCallWithOffline('add',{sheet:'fuelLogs',record}); showToast(r&&r.queued?'📦 Queued — sync hoga baad mein!':'Fuel log save!','ok'); }
+  resetFuel(); if (navigator.onLine) await loadAll();
+}
+
+function resetFuel() {
+  ['f-vehicle','f-liters','f-price','f-odo','f-station','f-mode','f-notes','f-edit-id','f-img-data'].forEach(id=>set(id,''));
+  set('f-date',new Date().toISOString().split('T')[0]);
+  set('f-total','');
+  document.getElementById('f-img-prev').style.display='none';
+  document.getElementById('fuel-btn-txt').textContent='Save';
+}
+
+function editFuel(id) {
+  const f = DB.fuelLogs.find(r=>r.id==id); if(!f) return;
+  set('f-date',f.date); set('f-vehicle',f.vehicle); set('f-liters',f.liters);
+  set('f-price',f.price_per_liter||f.priceperliter); set('f-odo',f.odometer);
+  set('f-station',f.fuel_station||f.fuelstation); set('f-mode',f.payment_mode||f.paymentmode);
+  set('f-notes',f.notes); set('f-edit-id',id);
+  if(f.image){const pr=document.getElementById('f-img-prev');pr.src=f.image;pr.style.display='inline-block';set('f-img-data',f.image);}
+  document.getElementById('fuel-btn-txt').textContent='Update';
+  calcFuel();
+  showPage('fuel',document.querySelectorAll('.nav-item')[9]);
+}
+
+function renderFuel() {
+  const sorted = [...DB.fuelLogs].sort((a,b)=>parseToISO(b.date||'').localeCompare(parseToISO(a.date||'')));
+  const totalAmt = sorted.reduce((s,f)=>s+(parseFloat(f.total_amount||f.totalamount||0)),0);
+  document.getElementById('fuel-total-txt').textContent = `Total: ₹${totalAmt.toLocaleString()}`;
+  document.getElementById('fuel-body').innerHTML = sorted.length ? sorted.map(f=>`<tr>
+    <td>${fmtDate(f.date)}</td><td><span class="tag tag-blue">${f.vehicle||''}</span></td>
+    <td>${f.liters||''}L</td><td>₹${f.price_per_liter||f.priceperliter||''}</td>
+    <td class="red">₹${parseFloat(f.total_amount||f.totalamount||0).toLocaleString()}</td>
+    <td>${f.odometer?f.odometer+'km':''}</td><td>${f.fuel_station||f.fuelstation||''}</td><td>${f.payment_mode||f.paymentmode||''}</td>
+    <td>${f.image?`<img src="${f.image}" class="img-thumb" onclick="openImgModal(this.src)" />`:'--'}</td>
+    <td>
+      <button class="btn btn-sm" style="background:#fef3c7;color:#92400e;margin-right:4px" onclick="editFuel('${f.id}')">✏</button>
+      <button class="btn btn-sm btn-danger" onclick="delRec('fuelLogs','${f.id}')">🗑</button>
+    </td>
+  </tr>`).join('') : `<tr><td colspan="10"><div class="empty"><div class="etxt">Koi fuel log nahi</div></div></td></tr>`;
+}
+
+// ============================================================
+// DATA VIEW / SHEETS
+// ============================================================
+const SHEET_DEFS = {
+  'Trips': {
+    key:'trips', dateField:'date', vehicleField:'vehicle',
+    cols:['Date','Vehicle','Route','Sale Amount','Received','Pending','Diesel','Driver','Toll','Expenses','Trip Margin'],
+    row: t => [
+      fmtDate(t.date), t.vehicle, t.route,
+      fmt_blue(t.sale_amount),
+      '₹'+(parseFloat(t.received||0)).toLocaleString(),
+      fmt_red(t.pending),
+      '₹'+(parseFloat(t.diesel||0)).toLocaleString(),
+      '₹'+(parseFloat(t.driver||0)).toLocaleString(),
+      '₹'+(parseFloat(t.toll||0)).toLocaleString(),
+      '₹'+(parseFloat(t.total_expenses||t.totalexpenses||0)).toLocaleString(),
+      fmt_margin(t.trip_margin||t.tripmargin)
+    ],
+    rawRow: t => [fmtDate(t.date),t.vehicle,t.route,t.sale_amount,t.received,t.pending,t.diesel,t.driver,t.toll,t.total_expenses||t.totalexpenses,t.trip_margin||t.tripmargin]
+  },
+  'Expenses': {
+    key:'expenses', dateField:'date', vehicleField:'vehicle',
+    cols:['Date','Month','Vehicle','Type','Description','Amount'],
+    row: e => [fmtDate(e.date),e.month,e.vehicle||'<span style="color:#9ca3af;font-size:11px">General</span>',
+      `<span class="tag ${tagCls(e.type)}">${e.type||''}</span>`,
+      e.description, `<span style="color:#dc2626;font-weight:600">₹${parseFloat(e.amount||0).toLocaleString()}</span>`],
+    rawRow: e => [fmtDate(e.date),e.month,e.vehicle||'',e.type,e.description,e.amount]
+  },
+  'Vehicles': {
+    key:'vehicles', dateField:null, vehicleField:'number',
+    cols:['Number','Type','Driver'],
+    row: v => [v.number,v.type,v.driver],
+    rawRow: v => [v.number,v.type,v.driver]
+  },
+  'Documents': {
+    key:'documents', dateField:'expiry_date', vehicleField:'vehicle',
+    cols:['Vehicle','Doc Type','Expiry Date','Notes'],
+    row: d => [d.vehicle,d.doc_type||d.doctype,fmtDate(d.expiry_date||d.expirydate),d.notes||''],
+    rawRow: d => [d.vehicle,d.doc_type||d.doctype,fmtDate(d.expiry_date||d.expirydate),d.notes||'']
+  },
+  'EMI Loans': {
+    key:'loans', dateField:'start_date', vehicleField:'vehicle',
+    cols:['Vehicle','Bank','Loan Amount','EMI Amount','Total EMIs','EMIs Paid','EMIs Remaining','Amount Paid','Amount Remaining','Progress %','Status'],
+    row: l => {
+      const paid = parseInt(l.emis_paid||l.emispaid||0);
+      const total = parseInt(l.total_emis||l.totalemis||0);
+      const rem = Math.max(total-paid,0);
+      const emiAmt = parseFloat(l.emi_amount||l.emiamount||0);
+      const amtPaid = Math.round(emiAmt*paid);
+      const amtRem = Math.round(emiAmt*rem);
+      const pct = total>0?Math.round((paid/total)*100):0;
+      const status = l.status || (rem<=0?'Closed':'Active');
+      const statusBadge = status==='Active'
+        ? '<span style="background:#dcfce7;color:#16a34a;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;border:1px solid #86efac">🟢 Active</span>'
+        : '<span style="background:#f3f4f6;color:#6b7280;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;border:1px solid #d1d5db">✅ Closed</span>';
+      const progressBar = `<div style="display:flex;align-items:center;gap:6px"><div style="flex:1;height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden"><div style="height:100%;background:#4f46e5;width:${pct}%"></div></div><span style="color:#1d4ed8;font-weight:700;font-size:12px">${pct}%</span></div>`;
+      return [
+        l.vehicle, l.bank,
+        `<span style="font-weight:600">₹${parseFloat(l.loan_amount||l.loanamount||0).toLocaleString()}</span>`,
+        `₹${emiAmt.toLocaleString()}`,
+        total, paid,
+        `<span style="color:#dc2626;font-weight:600">${rem}</span>`,
+        `<span style="color:#16a34a;font-weight:600">₹${amtPaid.toLocaleString()}</span>`,
+        `<span style="color:#dc2626;font-weight:600">₹${amtRem.toLocaleString()}</span>`,
+        progressBar,
+        statusBadge
+      ];
+    },
+    rawRow: l => [l.vehicle,l.bank,l.loan_amount||l.loanamount,l.emi_amount||l.emiamount,l.total_emis||l.totalemis,l.emis_paid||l.emispaid,l.emi_due_day||l.emidueday,l.status||'']
+  },
+  'EMI Payments': {
+    key:'emiPayments', dateField:'payment_date', vehicleField:null,
+    cols:['Payment Date','Vehicle — Bank','Month','Amount Paid','Mode','Notes'],
+    row: p => {
+      const l = DB.loans.find(x=>x.id===(p.loan_id||p.loanid));
+      return [
+        fmtDate(p.payment_date||p.paymentdate),
+        l ? `<b>${l.vehicle}</b> — ${l.bank}` : '',
+        p.payment_month||p.paymentmonth,
+        `<span style="color:#16a34a;font-weight:600">₹${parseFloat(p.amount_paid||p.amountpaid||0).toLocaleString()}</span>`,
+        p.payment_mode||p.paymentmode, p.notes||''
+      ];
+    },
+    rawRow: p => { const l=DB.loans.find(x=>x.id===(p.loan_id||p.loanid)); return [fmtDate(p.payment_date||p.paymentdate),l?l.vehicle+' '+l.bank:'',p.payment_month||p.paymentmonth,p.amount_paid||p.amountpaid,p.payment_mode||p.paymentmode,p.notes]; }
+  },
+  'Fuel Logs': {
+    key:'fuelLogs', dateField:'date', vehicleField:'vehicle',
+    cols:['Date','Vehicle','Liters','Rate/Ltr','Total Amount','Odometer','Station','Mode'],
+    row: f => [
+      fmtDate(f.date),f.vehicle,
+      `${parseFloat(f.liters||0).toLocaleString()} L`,
+      `₹${parseFloat(f.price_per_liter||f.priceperliter||0).toLocaleString()}`,
+      `<span style="color:#dc2626;font-weight:600">₹${parseFloat(f.total_amount||f.totalamount||0).toLocaleString()}</span>`,
+      f.odometer?f.odometer+' km':'',
+      f.fuel_station||f.fuelstation||'',
+      f.payment_mode||f.paymentmode||''
+    ],
+    rawRow: f => [fmtDate(f.date),f.vehicle,f.liters,f.price_per_liter||f.priceperliter,f.total_amount||f.totalamount,f.odometer,f.fuel_station||f.fuelstation,f.payment_mode||f.paymentmode]
+  }
+};
+
+// Color helper functions
+function fmt_blue(v) { return `<span style="color:#1d4ed8;font-weight:600">₹${parseFloat(v||0).toLocaleString()}</span>`; }
+function fmt_red(v)  { const n=parseFloat(v||0); return `<span style="color:${n>0?'#dc2626':'#16a34a'};font-weight:600">₹${n.toLocaleString()}</span>`; }
+function fmt_margin(v) { const n=parseFloat(v||0); return `<span style="color:${n>=0?'#16a34a':'#dc2626'};font-weight:700">₹${n.toLocaleString()}</span>`; }
+
+function populateDvFilters() {
+  // Populate year dropdown from all data
+  const allDates = [
+    ...DB.trips.map(r=>r.date),
+    ...DB.expenses.map(r=>r.date),
+    ...DB.emiPayments.map(r=>r.payment_date||r.paymentdate),
+    ...DB.fuelLogs.map(r=>r.date)
+  ].filter(Boolean).map(d=>d.slice(0,4)).filter(y=>y&&y>='2020');
+  const years = [...new Set(allDates)].sort((a,b)=>b-a);
+  const yrSel = document.getElementById('dv-year');
+  const curY = yrSel ? yrSel.value : '';
+  if (yrSel) {
+    yrSel.innerHTML = '<option value="">Sab Saal</option>' + years.map(y=>`<option value="${y}" ${curY===y?'selected':''}>${y}</option>`).join('');
+  }
+  // Populate vehicle dropdown
+  const vSel = document.getElementById('dv-vehicle');
+  const curV = vSel ? vSel.value : '';
+  if (vSel) {
+    const vehs = DB.vehicles.map(v=>v.number).filter(Boolean);
+    vSel.innerHTML = '<option value="">Sab Vehicles</option>' + vehs.map(v=>`<option value="${v}" ${curV===v?'selected':''}>${v}</option>`).join('');
+  }
+}
+
+function getFilteredRows(def) {
+  const yr = document.getElementById('dv-year')?.value || '';
+  const mo = document.getElementById('dv-month')?.value || '';
+  const vh = document.getElementById('dv-vehicle')?.value || '';
+  let rows = [...(DB[def.key]||[])];
+
+  // Sort newest first
+  rows.sort((a,b)=>{
+    const da = a[def.dateField]||a.date||a.payment_date||'';
+    const db2 = b[def.dateField]||b.date||b.payment_date||'';
+    return db2.localeCompare(da);
+  });
+
+  // Date filter
+  if ((yr||mo) && def.dateField) {
+    rows = rows.filter(r => {
+      const d = String(r[def.dateField]||r.date||r.payment_date||r.month||'');
+      if (yr && !d.startsWith(yr)) return false;
+      if (mo && !d.slice(5,7).startsWith(mo) && !d.slice(5,7)===mo) return false;
+      return true;
+    });
+  }
+
+  // EMI Payments — also filter by payment_month field
+  if (def.key === 'emiPayments' && mo) {
+    rows = rows.filter(r => {
+      const pm = String(r.payment_month||r.paymentmonth||'');
+      return pm.includes('-'+mo) || pm.endsWith('-'+mo);
+    });
+  }
+
+  // Vehicle filter
+  if (vh && def.vehicleField) {
+    rows = rows.filter(r => String(r[def.vehicleField]||'') === vh);
+  }
+
+  return rows;
+}
+
+function renderDvSummary(def, rows) {
+  const sumDiv = document.getElementById('dv-summary');
+  if (!sumDiv) return;
+  let html = '';
+  if (def.key === 'trips') {
+    const sale = rows.reduce((s,r)=>s+parseFloat(r.sale_amount||0),0);
+    const pend = rows.reduce((s,r)=>s+parseFloat(r.pending||0),0);
+    const margin = rows.reduce((s,r)=>s+parseFloat(r.trip_margin||r.tripmargin||0),0);
+    html = `
+      <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:8px 14px;font-size:13px"><span style="color:#64748b">Total Sale</span><br><b style="color:#1d4ed8">₹${sale.toLocaleString()}</b></div>
+      <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:8px 14px;font-size:13px"><span style="color:#64748b">Pending</span><br><b style="color:#dc2626">₹${pend.toLocaleString()}</b></div>
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:8px 14px;font-size:13px"><span style="color:#64748b">Net Margin</span><br><b style="color:#16a34a">₹${margin.toLocaleString()}</b></div>`;
+    sumDiv.style.display = 'flex';
+  } else if (def.key === 'expenses') {
+    const total = rows.reduce((s,r)=>s+parseFloat(r.amount||0),0);
+    html = `<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:8px 14px;font-size:13px"><span style="color:#64748b">Total Expenses</span><br><b style="color:#dc2626">₹${total.toLocaleString()}</b></div>`;
+    sumDiv.style.display = 'flex';
+  } else if (def.key === 'emiPayments') {
+    const total = rows.reduce((s,r)=>s+parseFloat(r.amount_paid||r.amountpaid||0),0);
+    html = `<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:8px 14px;font-size:13px"><span style="color:#64748b">Total EMI Paid</span><br><b style="color:#16a34a">₹${total.toLocaleString()}</b></div>`;
+    sumDiv.style.display = 'flex';
+  } else if (def.key === 'fuelLogs') {
+    const totalAmt = rows.reduce((s,r)=>s+parseFloat(r.total_amount||r.totalamount||0),0);
+    const totalLtr = rows.reduce((s,r)=>s+parseFloat(r.liters||0),0);
+    html = `
+      <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:8px 14px;font-size:13px"><span style="color:#64748b">Total Fuel Cost</span><br><b style="color:#dc2626">₹${totalAmt.toLocaleString()}</b></div>
+      <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:8px 14px;font-size:13px"><span style="color:#64748b">Total Liters</span><br><b style="color:#1d4ed8">${totalLtr.toLocaleString()} L</b></div>`;
+    sumDiv.style.display = 'flex';
+  } else {
+    sumDiv.style.display = 'none';
+  }
+  sumDiv.innerHTML = html;
+}
+
+function renderSheets() {
+  populateDvFilters();
+  const tabs = document.getElementById('sheet-tabs');
+  if (tabs) tabs.innerHTML = Object.keys(SHEET_DEFS).map(s=>`<button class="btn btn-sm ${activeSheet===s?'btn-primary':'btn-secondary'}" onclick="switchSheet('${s}')" style="font-size:12px;padding:5px 12px">${s}</button>`).join('');
+
+  // Show/hide vehicle filter based on sheet
+  const def = SHEET_DEFS[activeSheet];
+  const vSel = document.getElementById('dv-vehicle');
+  if (vSel) vSel.style.display = def.vehicleField ? '' : 'none';
+
+  const rows = getFilteredRows(def);
+  const countEl = document.getElementById('dv-count');
+  if (countEl) countEl.textContent = rows.length + ' records';
+
+  // Render summary
+  renderDvSummary(def, rows);
+
+  // Build table HTML
+  const thead = `<thead><tr>${def.cols.map(col=>{
+    let style = '';
+    if (col.includes('Amount')||col.includes('Sale')||col.includes('Margin')||col.includes('Pending')) style='min-width:110px';
+    return `<th style="${style}">${col}</th>`;
+  }).join('')}</tr></thead>`;
+
+  const tbody = rows.length
+    ? rows.map(r => {
+        const cells = def.row(r);
+        return `<tr>${cells.map(cell=>`<td>${cell===null||cell===undefined?'':cell}</td>`).join('')}</tr>`;
+      }).join('')
+    : `<tr><td colspan="${def.cols.length}"><div class="empty"><div class="etxt">Koi data nahi is filter ke liye</div></div></td></tr>`;
+
+  document.getElementById('sheet-content').innerHTML = `<table>${thead}<tbody>${tbody}</tbody></table>`;
+}
+
+function switchSheet(s) { activeSheet = s; renderSheets(); }
+function clearDvFilters() {
+  const yr=document.getElementById('dv-year'); if(yr) yr.value='';
+  const mo=document.getElementById('dv-month'); if(mo) mo.value='';
+  const vh=document.getElementById('dv-vehicle'); if(vh) vh.value='';
+  renderSheets();
+}
+
+function exportCSV() {
+  const def = SHEET_DEFS[activeSheet];
+  const rows = getFilteredRows(def);
+  const csv = [def.cols, ...rows.map(r=>def.rawRow?def.rawRow(r):def.row(r))]
+    .map(r=>r.map(cell=>`"${(cell===null||cell===undefined?'':cell.toString()).replace(/<[^>]*>/g,'').replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
+  a.download = activeSheet+'_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
+  showToast('✅ CSV export ho gaya!','ok');
+}
+
+// ============================================================
+// DELETE
+// ============================================================
+async function delRec(sheet, id) {
+  if (!confirm('Delete karna chahte hain?')) return;
+  await apiCall('delete', { sheet, id });
+  showToast('Delete ho gaya!','ok');
+  await loadAll();
+}
+
+// ============================================================
+// EXPENSE SEARCH
+// ============================================================
+function initExpSearch() {
+  // Set default date range: 1 year back to today
+  const today = new Date().toISOString().split('T')[0];
+  const yearBack = new Date(Date.now() - 365*24*60*60*1000).toISOString().split('T')[0];
+  if (!document.getElementById('es-from').value) document.getElementById('es-from').value = yearBack;
+  if (!document.getElementById('es-to').value) document.getElementById('es-to').value = today;
+  runExpSearch();
+}
+
+function resetExpSearch() {
+  ['es-vehicle','es-type','es-keyword'].forEach(id => { const el=document.getElementById(id); if(el) el.value = el.tagName==='SELECT'?(el.options[0]&&el.options[0].value||'all'):''; });
+  initExpSearch();
+}
+
+function runExpSearch() {
+  const vf = document.getElementById('es-vehicle')?.value || 'all';
+  const tf = document.getElementById('es-type')?.value || 'all';
+  const kw = (document.getElementById('es-keyword')?.value || '').toLowerCase().trim();
+  const fromDate = document.getElementById('es-from')?.value || '';
+  const toDate = document.getElementById('es-to')?.value || '';
+
+  let results = [];
+
+  // From Other Expenses
+  if (!tf.startsWith('trip-')) {
+    DB.expenses.forEach(e => {
+      const iso = parseToISO(e.date||'');
+      if (fromDate && iso < fromDate) return;
+      if (toDate && iso > toDate) return;
+      if (vf !== 'all' && e.vehicle && e.vehicle !== vf) return;
+      if (tf !== 'all' && e.type !== tf) return;
+      if (kw && !(e.description||'').toLowerCase().includes(kw) && !(e.type||'').toLowerCase().includes(kw)) return;
+      results.push({ date: e.date, vehicle: e.vehicle || 'General', category: e.type, description: e.description, route: '--', amount: parseFloat(e.amount)||0, source: 'Purchase', id: e.id, _sheet:'expenses' });
+    });
+  }
+
+  // From Trip maintenance/diesel/toll/loading
+  const tripFields = tf === 'all' ? ['maintenance','diesel','toll','loading'] :
+    tf === 'trip-diesel' ? ['diesel'] : tf === 'trip-toll' ? ['toll'] :
+    tf === 'trip-maint' ? ['maintenance'] : tf === 'trip-loading' ? ['loading'] : [];
+
+  if (tf === 'all' || tf.startsWith('trip-')) {
+    DB.trips.forEach(t => {
+      const iso = parseToISO(t.date||'');
+      if (fromDate && iso < fromDate) return;
+      if (toDate && iso > toDate) return;
+      if (vf !== 'all' && t.vehicle !== vf) return;
+      tripFields.forEach(field => {
+        const amt = parseFloat(t[field]||0);
+        if (!amt) return;
+        const desc = field === 'maintenance' ? (t.maintenance_reason||t.maintenancereason||'Maintenance') : field.charAt(0).toUpperCase()+field.slice(1);
+        if (kw && !desc.toLowerCase().includes(kw) && !(t.route||'').toLowerCase().includes(kw)) return;
+        results.push({ date: t.date, vehicle: t.vehicle, category: field.charAt(0).toUpperCase()+field.slice(1), description: desc, route: t.route||'', amount: amt, source: 'Trip', id: t.id+'_'+field, _sheet:'trips' });
+      });
+    });
+  }
+
+  // Sort by date desc
+  results.sort((a,b) => parseToISO(b.date||'').localeCompare(parseToISO(a.date||'')));
+
+  const totalAmt = results.reduce((s,r)=>s+r.amount,0);
+  const maintAmt = results.filter(r=>r.category==='Maintenance'||r.category==='Repair & Maintenance').reduce((s,r)=>s+r.amount,0);
+  const dieselAmt = results.filter(r=>r.category==='Diesel'||r.source==='Trip'&&r.category==='Diesel').reduce((s,r)=>s+r.amount,0);
+  const tollAmt = results.filter(r=>r.category==='Toll').reduce((s,r)=>s+r.amount,0);
+
+  // Stats
+  document.getElementById('es-stats').innerHTML = [
+    ['Total Expenses','₹'+totalAmt.toLocaleString(),results.length+' entries','#ef4444'],
+    ['Maintenance','₹'+maintAmt.toLocaleString(),'','#8b5cf6'],
+    ['Diesel','₹'+dieselAmt.toLocaleString(),'','#f97316'],
+    ['Toll','₹'+tollAmt.toLocaleString(),'','#10b981'],
+  ].map(([l,v,s,c])=>`<div class="stat-card"><div class="stat-label">${l}</div><div class="stat-value" style="color:${c};font-size:16px">${v}</div><div class="stat-sub">${s}</div></div>`).join('');
+
+  document.getElementById('es-result-count').textContent = results.length + ' results mile';
+
+  // Table
+  document.getElementById('es-results-table').innerHTML = results.length ?
+    `<table><thead><tr><th>Date</th><th>Vehicle</th><th>Category</th><th>Description</th><th>Route</th><th>Amount</th><th>Source</th></tr></thead><tbody>${
+      results.map(r=>`<tr>
+        <td>${fmtDate(r.date)}</td>
+        <td>${r.vehicle||''}</td>
+        <td><span class="tag ${r.category.includes('Maint')||r.category==='Maintenance'?'tag-yellow':r.category==='Purchase'?'tag-purple':r.category==='Diesel'?'tag-blue':'tag-gray'}">${r.category}</span></td>
+        <td style="max-width:300px">${r.description||''}</td>
+        <td>${r.route||'--'}</td>
+        <td class="red">₹${r.amount.toLocaleString()}</td>
+        <td><span class="tag ${r.source==='Trip'?'tag-blue':'tag-green'}">${r.source}</span></td>
+      </tr>`).join('')
+    }</tbody></table>` : `<div class="empty"><div class="eico">🔍</div><div class="etxt">Koi result nahi mila</div></div>`;
+
+  // Timeline grouped by month
+  const byMonth = {};
+  results.forEach(r => { const m = parseToISO(r.date||'').slice(0,7); if(!byMonth[m]) byMonth[m]=[]; byMonth[m].push(r); });
+  const months = Object.keys(byMonth).sort().reverse();
+  
+  const tc = document.getElementById('es-timeline-card');
+  if (months.length > 0) {
+    tc.style.display = '';
+    document.getElementById('es-timeline').innerHTML = months.map(m => {
+      const mTotal = byMonth[m].reduce((s,r)=>s+r.amount,0);
+      return `<div style="background:#4f46e5;color:white;padding:8px 14px;border-radius:8px;margin-bottom:8px;display:flex;justify-content:space-between;font-weight:700;font-size:13px">
+        <span>📅 ${m}</span><span>₹${mTotal.toLocaleString()} (${byMonth[m].length} entries)</span>
+      </div>${byMonth[m].map(r=>`<div style="display:flex;gap:12px;padding:6px 14px;border-bottom:1px solid #f3f4f6;font-size:12px;align-items:center">
+        <span style="color:#6b7280;white-space:nowrap">${fmtDate(r.date)}</span>
+        <span class="tag ${r.category.includes('Maint')?'tag-yellow':r.category==='Purchase'?'tag-purple':'tag-gray'}" style="white-space:nowrap">${r.category}</span>
+        <span style="flex:1">${r.vehicle||''} ${r.route?'→ '+r.route:''} — ${r.description||''}</span>
+        <span class="red" style="font-weight:700;white-space:nowrap">₹${r.amount.toLocaleString()}</span>
+      </div>`).join('')}`;
+    }).join('');
+  } else { tc.style.display = 'none'; }
+}
+
+// ============================================================
+// EMI TRACKER - FULL CALCULATOR WITH BANK CHARGES + PENALTY
+// ============================================================
+function getLoanFields(loan) {
+  // Robust field extraction - handles both old (no interest cols) and new schema
+  const raw = loan;
+  
+  let emiAmt        = parseFloat(raw.emi_amount||raw.emiamount||0);
+  let interestRate  = parseFloat(raw.interest_rate||raw.interestrate||0);
+  let totalInterest = parseFloat(raw.total_interest||raw.totalinterest||0);
+  let totalPayable  = parseFloat(raw.total_payable||raw.totalpayable||0);
+  let totalEmis     = parseInt(raw.total_emis||raw.totalemis||0);
+  let emisPaid      = parseInt(raw.emis_paid||raw.emispaid||0);
+  let dueDay        = parseInt(raw.emi_due_day||raw.emidueday||5);
+  let loanAmt       = parseFloat(raw.loan_amount||raw.loanamount||0);
+
+  // Detect shifted columns: if emiAmt < 100 it's probably interest_rate value in wrong column
+  if (emiAmt > 0 && emiAmt < 100) {
+    // Columns shifted — try to find real EMI value
+    if (totalEmis > 10000)      { emiAmt = totalEmis; totalEmis = 59; }
+    else if (totalPayable > 10000) { emiAmt = totalPayable; totalPayable = 0; }
+    else                          { emiAmt = 0; } // will be recalculated below
+    interestRate = 0; // unknown since data is shifted
+    totalInterest = 0;
+    totalPayable = 0;
+  }
+
+  // If interest fields are blank (old loan saved without interest cols) but we have enough info
+  // — calculate them on the fly using Reducing Balance Method
+  if (emiAmt > 0 && loanAmt > 0 && totalEmis > 0) {
+    // Recalculate total payable from actual EMI × N
+    const calcTotalPayable = emiAmt * totalEmis;
+    const calcTotalInterest = calcTotalPayable - loanAmt;
+
+    if (!totalPayable || totalPayable <= loanAmt) totalPayable = calcTotalPayable;
+    if (!totalInterest || totalInterest <= 0)     totalInterest = calcTotalInterest;
+
+    // Reverse-engineer interest rate if missing
+    if (!interestRate && loanAmt > 0 && totalEmis > 0) {
+      // Binary search for monthly rate
+      let lo = 0.0001, hi = 0.05;
+      for (let i = 0; i < 50; i++) {
+        const mid = (lo + hi) / 2;
+        const calc = Math.ceil(loanAmt * mid * Math.pow(1+mid, totalEmis) / (Math.pow(1+mid, totalEmis) - 1));
+        if (calc < emiAmt) lo = mid; else hi = mid;
+      }
+      interestRate = parseFloat(((lo + hi) / 2 * 12 * 100).toFixed(2));
+    }
+  }
+
+  return { loanAmt, interestRate, totalInterest, totalPayable, emiAmt, totalEmis, emisPaid, dueDay };
+}
+
+function calcEMIDetails(loan) {
+  // Get all payments for this loan sorted by payment month ascending
+  const payments = DB.emiPayments
+    .filter(p => (p.loan_id||p.loanid) === loan.id)
+    .sort((a,b) => (a.payment_month||a.paymentmonth||'').localeCompare(b.payment_month||b.paymentmonth||''));
+
+  const { emiAmt, dueDay } = getLoanFields(loan);
+  const baseEMI = emiAmt;
+  const BANK_CHARGE = 50;
+  const PENALTY = 550;
+  const DUE_DAY = dueDay || 5;
+
+  let carryForward = 0; // negative = credit (overpaid), positive = debit (underpaid)
+  const rows = [];
+
+  payments.forEach(p => {
+    const paid = parseFloat(p.amount_paid||p.amountpaid||0);
+    const payDate = parseToISO(p.payment_date||p.paymentdate||'');
+    const payMonth = p.payment_month||p.paymentmonth||'';
+    
+    // Check if paid after due date (after 5th of month)
+    let bankCharge = 0, penalty = 0;
+    if (payDate) {
+      const dayPaid = parseInt(payDate.split('-')[2]||0);
+      if (dayPaid > DUE_DAY) { bankCharge = BANK_CHARGE; penalty = PENALTY; }
+    }
+    
+    const prevBal = carryForward; // credit is negative, debit is positive
+    // Total due = base EMI + carry forward + bank charge + penalty
+    // If carry forward is negative (credit), it reduces what's due
+    const totalDue = baseEMI + carryForward + bankCharge + penalty;
+    const diff = paid - totalDue; // positive = overpaid (credit), negative = underpaid (debit)
+    carryForward = -diff; // next month's adjustment: negative diff means next month owes more
+    
+    const status = diff >= 0 ? 'CLEARED' : diff > -500 ? 'SHORT' : 'UNPAID';
+    const credit = diff >= 0 ? diff : 0;
+
+    rows.push({ 
+      month: payMonth, date: payDate, paid, bankCharge, penalty, 
+      prevBal: -prevBal, // show as credit (negative means they had credit)
+      totalDue: Math.max(0,totalDue), diff, carryFwd: -carryForward,
+      status, credit,
+      paymentMode: p.payment_mode||p.paymentmode||'',
+      notes: p.notes||'', id: p.id
+    });
+  });
+
+  return { rows, carryForward, baseEMI, BANK_CHARGE, PENALTY };
+}
+
+// Get selected loan details for payment form
+function updateEMIPaymentDetails() {
+  const loanId = document.getElementById('ep-loan')?.value;
+  const loan = DB.loans.find(l => l.id === loanId);
+  const detailBox = document.getElementById('emi-payment-detail');
+  if (!detailBox) return;
+  
+  if (!loan) { detailBox.style.display = 'none'; return; }
+  
+  const { emiAmt: baseEMI, dueDay } = getLoanFields(loan);
+  const { rows, carryForward, BANK_CHARGE, PENALTY } = calcEMIDetails(loan);
+  const DUE_DAY = dueDay || 5;
+  
+  // Current payment date
+  const payDateStr = document.getElementById('ep-date')?.value || '';
+  const dayPaid = payDateStr ? parseInt(payDateStr.split('-')[2]||0) : 0;
+  const amtEntered = parseFloat(document.getElementById('ep-amount')?.value)||0;
+  const isLate = dayPaid > DUE_DAY;
+  // Also check if amount is short (less than base EMI, accounting for credit)
+  const effectiveDue = baseEMI + (carryForward > 0 ? carryForward : 0);
+  const isShort = amtEntered > 0 && amtEntered < effectiveDue && carryForward >= 0;
+  const bankCharge = isLate ? BANK_CHARGE : 0;
+  const penalty = isLate ? PENALTY : 0;
+  
+  // Previous carry forward (from last entry)
+  const prevCarry = -carryForward; // positive = they owe, negative = credit
+  // Total due = EMI + any pending carry forward - any credit + bank charge + penalty
+  const pendingBal = carryForward > 0 ? carryForward : 0;   // debit from before
+  const creditBal  = carryForward < 0 ? -carryForward : 0;  // credit from before
+  const totalDue = Math.max(0, baseEMI + pendingBal - creditBal) + bankCharge + penalty;
+  
+  detailBox.style.display = '';
+  detailBox.innerHTML = `
+    <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:14px;margin-bottom:12px">
+      <div style="font-weight:700;font-size:13px;margin-bottom:10px;color:#92400e">⚠️ Payment Details</div>
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;text-align:center">
+        <div style="background:white;border-radius:8px;padding:8px">
+          <div style="font-size:11px;color:#6b7280">Base EMI</div>
+          <div style="font-size:15px;font-weight:800;color:#1a1d2e">₹${baseEMI.toLocaleString()}</div>
+        </div>
+        <div style="background:${carryForward>0?'#fef2f2':'#f0fdf4'};border-radius:8px;padding:8px">
+          <div style="font-size:11px;color:#6b7280">Prev. Balance</div>
+          <div style="font-size:15px;font-weight:800;color:${carryForward>0?'#ef4444':'#10b981'}">${carryForward>0?'+':''}₹${Math.abs(carryForward).toLocaleString()}</div>
+          <div style="font-size:9px;color:#6b7280">${carryForward<0?'Credit':'Debit'}</div>
+        </div>
+        <div style="background:${isLate?'#fef2f2':'#f9fafb'};border-radius:8px;padding:8px">
+          <div style="font-size:11px;color:#6b7280">Bank Charge</div>
+          <div style="font-size:15px;font-weight:800;color:${isLate?'#ef4444':'#6b7280'}">₹${bankCharge}</div>
+        </div>
+        <div style="background:${isLate?'#fef2f2':'#f9fafb'};border-radius:8px;padding:8px">
+          <div style="font-size:11px;color:#6b7280">Penalty</div>
+          <div style="font-size:15px;font-weight:800;color:${isLate?'#ef4444':'#6b7280'}">₹${penalty}</div>
+        </div>
+        <div style="background:#dbeafe;border-radius:8px;padding:8px">
+          <div style="font-size:11px;color:#6b7280">Total Due</div>
+          <div style="font-size:15px;font-weight:800;color:#1e40af">₹${Math.round(totalDue).toLocaleString()}</div>
+        </div>
+        <div style="background:#fef2f2;border-radius:8px;padding:8px">
+          <div style="font-size:11px;color:#6b7280">Carry Fwd</div>
+          <div style="font-size:15px;font-weight:800;color:#ef4444">₹${Math.round(Math.max(0,carryForward)).toLocaleString()}</div>
+        </div>
+      </div>
+      ${carryForward !== 0 ? `<div style="margin-top:8px;font-size:12px;color:#6b7280">
+        • Previous credit/surplus: ${carryForward<0?'+':''}₹${Math.abs(Math.round(carryForward)).toLocaleString()} (next EMI se ${carryForward<0?'deduct':'add'} hoga)
+      </div>` : ''}
+      ${isLate ? `<div style="margin-top:4px;font-size:12px;color:#ef4444">
+        ⏰ Payment ${DUE_DAY} tarikh ke baad ho — Bank Charge ₹${BANK_CHARGE} + Penalty ₹${PENALTY} add hoga
+      </div>` : `<div style="margin-top:4px;font-size:12px;color:#10b981">
+        ✅ Payment date ${DUE_DAY} tarikh tak — No bank charges
+      </div>`}
+      <div style="margin-top:4px;font-size:12px;color:#1e40af">
+        • Amount ₹${Math.round(totalDue).toLocaleString()} — Is payment ke baad carry forward: ₹<span id="emi-carry-preview">?</span>
+      </div>
+    </div>`;
+    
+  // Update carry preview on amount change
+  const amtEl = document.getElementById('ep-amount');
+  if (amtEl) {
+    const updatePreview = () => {
+      const paid = parseFloat(amtEl.value)||0;
+      const diff = paid - totalDue;
+      const nxt = -diff;
+      const pr = document.getElementById('emi-carry-preview');
+      if (pr) pr.textContent = Math.round(Math.max(0,nxt)).toLocaleString();
+    };
+    amtEl.oninput = updatePreview;
+    updatePreview();
+  }
+}
+
+function renderEMI() {
+  // Detect and warn about column-shifted loan data
+  const hasShiftedData = DB.loans.some(l => {
+    const rawEmi = parseFloat(l.emi_amount||l.emiamount||0);
+    return rawEmi > 0 && rawEmi < 100; // interest rate value in EMI field
+  });
+  const warnEl = document.getElementById('emi-data-warning');
+  if (warnEl) warnEl.style.display = hasShiftedData ? '' : 'none';
+
+  // Populate loan select with details
+  const loanSel = document.getElementById('ep-loan');
+  if (loanSel) {
+    const cur = loanSel.value;
+    loanSel.innerHTML = '<option value="">Loan select karein</option>';
+    DB.loans.forEach(l => {
+      const { emiAmt: baseEMI2 } = getLoanFields(l);
+      const o = document.createElement('option');
+      o.value = l.id;
+      o.textContent = `${l.vehicle} — ${l.bank} (₹${baseEMI2.toLocaleString()}/mo)`;
+      loanSel.appendChild(o);
+    });
+    if (cur) loanSel.value = cur;
+    loanSel.onchange = updateEMIPaymentDetails;
+  }
+  const epDate = document.getElementById('ep-date');
+  if (epDate) epDate.onchange = updateEMIPaymentDetails;
+
+  // Loans list
+  document.getElementById('loans-body').innerHTML = DB.loans.length ? DB.loans.map(l => {
+    const { emiAmt, loanAmt, totalEmis, interestRate, totalInterest, totalPayable } = getLoanFields(l);
+    const baseEMI = emiAmt;
+    const { rows, carryForward } = calcEMIDetails(l);
+    const totalPaid = rows.reduce((s,r)=>s+r.paid,0);
+    const emisDone = rows.length;
+    const totalExpected = totalPayable > 0 ? totalPayable : loanAmt;
+    const pct = totalEmis > 0 ? Math.round((emisDone/totalEmis)*100) : 0;
+    const remaining = Math.max(0, totalExpected - totalPaid);
+
+    return `<div class="card" style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div>
+          <span style="font-size:15px;font-weight:800">🚛 ${l.vehicle} — ${l.bank}</span>
+          <span style="display:inline-block;margin-left:8px;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;background:${pct>=100?'#f3f4f6':'#dcfce7'};color:${pct>=100?'#6b7280':'#16a34a'};border:1px solid ${pct>=100?'#d1d5db':'#86efac'}">${pct>=100?'✅ Closed':'🟢 Active'}</span>
+          <div style="font-size:11px;color:#6b7280;margin-top:2px">
+            Principal: ₹${loanAmt.toLocaleString()} 
+            ${interestRate ? ` | Rate: ${interestRate}% p.a.` : ''}
+            ${totalInterest > 0 ? ` | Interest: ₹${Math.round(totalInterest).toLocaleString()}` : ''}
+            ${totalPayable > 0 ? ` | Total Payable: ₹${Math.round(totalPayable).toLocaleString()}` : ''}
+            | EMI: ₹${baseEMI.toLocaleString()}/month
+          </div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-success btn-sm" onclick="quickPayEMI('${l.id}')">⚡ Quick Pay</button>
+          <button class="btn btn-sm btn-danger" onclick="delRec('loans','${l.id}')">🗑</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px">
+        <div style="background:#dbeafe;border-radius:8px;padding:8px;text-align:center">
+          <div style="font-size:9px;color:#1e40af;font-weight:700">PRINCIPAL</div>
+          <div style="font-size:13px;font-weight:800;color:#1e40af">₹${loanAmt.toLocaleString()}</div>
+        </div>
+        <div style="background:#fef3c7;border-radius:8px;padding:8px;text-align:center">
+          <div style="font-size:9px;color:#92400e;font-weight:700">INTEREST (${interestRate||'?'}%)</div>
+          <div style="font-size:13px;font-weight:800;color:#92400e">₹${Math.round(totalInterest).toLocaleString()}</div>
+        </div>
+        <div style="background:#d1fae5;border-radius:8px;padding:8px;text-align:center">
+          <div style="font-size:9px;color:#065f46;font-weight:700">TOTAL PAYABLE</div>
+          <div style="font-size:13px;font-weight:800;color:#065f46">₹${Math.round(totalPayable||loanAmt).toLocaleString()}</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:10px">
+        <div style="text-align:center;background:#f9fafb;border-radius:8px;padding:10px">
+          <div style="font-size:10px;color:#6b7280">EMIS</div>
+          <div style="font-size:18px;font-weight:800">${emisDone}/${totalEmis}</div>
+        </div>
+        <div style="text-align:center;background:#f0fdf4;border-radius:8px;padding:10px">
+          <div style="font-size:10px;color:#6b7280">PAID</div>
+          <div style="font-size:16px;font-weight:800;color:#10b981">₹${totalPaid.toLocaleString()}</div>
+        </div>
+        <div style="text-align:center;background:#fef2f2;border-radius:8px;padding:10px">
+          <div style="font-size:10px;color:#6b7280">REMAINING</div>
+          <div style="font-size:16px;font-weight:800;color:#ef4444">₹${Math.max(0,remaining).toLocaleString()}</div>
+        </div>
+        <div style="text-align:center;background:#ede9fe;border-radius:8px;padding:10px">
+          <div style="font-size:10px;color:#6b7280">DONE</div>
+          <div style="font-size:18px;font-weight:800;color:#7c3aed">${pct}%</div>
+        </div>
+      </div>
+      <div style="height:8px;background:#f3f4f6;border-radius:4px;margin-bottom:8px">
+        <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,#4f46e5,#10b981);border-radius:4px"></div>
+      </div>
+      ${carryForward > 0 ? `<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:6px;padding:6px 10px;font-size:12px;color:#ef4444;font-weight:700">⚠️ Outstanding carry forward: ₹${Math.round(carryForward).toLocaleString()}</div>` : carryForward < 0 ? `<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;padding:6px 10px;font-size:12px;color:#10b981;font-weight:700">✅ Credit balance: +₹${Math.round(-carryForward).toLocaleString()}</div>` : ''}
+    </div>`;
+  }).join('') : `<div class="card"><div class="empty"><div class="etxt">Koi loan nahi abhi — upar se add karein</div></div></div>`;
+
+  // Also fill the summary table rows
+  const loansTbl = document.getElementById('loans-table-body');
+  if (loansTbl) {
+    loansTbl.innerHTML = DB.loans.length ? DB.loans.map(l => {
+      const { emiAmt, loanAmt, totalEmis, interestRate, totalInterest, totalPayable, dueDay } = getLoanFields(l);
+      const { rows, carryForward } = calcEMIDetails(l);
+      const totalPaid = rows.reduce((s,r)=>s+r.paid,0);
+      const totalExpected = totalPayable > 0 ? totalPayable : loanAmt;
+      const remaining = Math.max(0, totalExpected - totalPaid);
+      const carryBadge = carryForward > 0
+        ? `<span style="color:#ef4444;font-size:10px;display:block">⚠️ +₹${Math.round(carryForward).toLocaleString()} due</span>`
+        : carryForward < 0
+        ? `<span style="color:#10b981;font-size:10px;display:block">✅ +₹${Math.round(-carryForward).toLocaleString()} credit</span>`
+        : '';
+      return `<tr style="border-bottom:1px solid #f3f4f6" onmouseenter="this.style.background='#f9fafb'" onmouseleave="this.style.background=''">
+        <td style="padding:10px;font-weight:700">
+          <span class="tag tag-blue">${l.vehicle||''}</span>
+        </td>
+        <td style="padding:10px;color:#374151">${l.bank||''}</td>
+        <td style="padding:10px;text-align:right;font-weight:700;color:#1e40af">₹${loanAmt.toLocaleString()}</td>
+        <td style="padding:10px;text-align:right;font-weight:700;color:#4f46e5">₹${emiAmt.toLocaleString()}</td>
+        <td style="padding:10px;text-align:center">
+          <div style="font-weight:700">${rows.length}/${totalEmis}</div>
+          <div style="height:4px;background:#f3f4f6;border-radius:2px;margin-top:3px;width:60px;margin-inline:auto">
+            <div style="height:100%;width:${totalEmis>0?Math.round((rows.length/totalEmis)*100):0}%;background:#4f46e5;border-radius:2px"></div>
+          </div>
+        </td>
+        <td style="padding:10px;text-align:right;font-weight:700;color:#10b981">₹${totalPaid.toLocaleString()}</td>
+        <td style="padding:10px;text-align:right">
+          <span style="font-weight:700;color:#ef4444">₹${remaining.toLocaleString()}</span>
+          ${carryBadge}
+        </td>
+        <td style="padding:10px;text-align:center">
+          <span style="background:#ede9fe;color:#5b21b6;padding:2px 8px;border-radius:12px;font-size:12px;font-weight:700">${dueDay}</span>
+        </td>
+        <td style="padding:10px;text-align:center">
+          <div style="display:flex;gap:4px;justify-content:center">
+            <button class="btn btn-success btn-sm" onclick="quickPayEMI('${l.id}')" title="Quick Pay">⚡</button>
+            <button class="btn btn-sm btn-danger" onclick="delRec('loans','${l.id}')" title="Delete">🗑</button>
+          </div>
+        </td>
+      </tr>`;
+    }).join('') : `<tr><td colspan="9" style="padding:20px;text-align:center;color:#9ca3af">Koi loan nahi abhi</td></tr>`;
+  }
+
+  // EMI Payment records with full detail
+  const allLoanPayments = [];
+  DB.loans.forEach(l => {
+    const { rows } = calcEMIDetails(l);
+    const { emiAmt: lBaseEMI } = getLoanFields(l);
+    rows.forEach(r => allLoanPayments.push({ ...r, loanLabel: `${l.vehicle} - ${l.bank}`, baseEMI: lBaseEMI }));
+  });
+  allLoanPayments.sort((a,b) => b.month.localeCompare(a.month));
+
+  const totalPaidAll = allLoanPayments.reduce((s,r)=>s+r.paid,0);
+
+  document.getElementById('emipay-body').innerHTML = (function() {
+    if (!allLoanPayments.length) return '<tr><td colspan="13"><div class="empty"><div class="etxt">Koi payment record nahi</div></div></td></tr>';
+    let html = '<tr style="background:#f0fdf4"><td colspan="13" style="font-weight:700;color:#10b981;padding:8px 10px">&#9989; Total Paid: &#8377;' + totalPaidAll.toLocaleString() + ' (' + allLoanPayments.length + ' entries)</td></tr>';
+    allLoanPayments.forEach(function(r) {
+      const statusBg = r.status==='CLEARED' ? 'tag-green' : r.status==='SHORT' ? 'tag-yellow' : 'tag-red';
+      const statusIcon = r.status==='CLEARED' ? '&#9989;' : '&#9888;&#65039;';
+      const creditTxt = r.credit > 0 ? '(+&#8377;' + Math.round(r.credit).toLocaleString() + ' credit)' : '';
+      const prevBalTxt = r.prevBal !== 0 ? (r.prevBal > 0 ? '-' : '+') + '&#8377;' + Math.abs(Math.round(r.prevBal)).toLocaleString() : '--';
+      const prevBalCls = r.prevBal > 0 ? 'red' : r.prevBal < 0 ? 'green' : '';
+      const carryTxt = r.carryFwd > 0 ? '&#9888; &#8377;' + Math.round(r.carryFwd).toLocaleString()
+                     : r.carryFwd < 0 ? '&#9989; +&#8377;' + Math.round(-r.carryFwd).toLocaleString()
+                     : '&#9989; &#8377;0';
+      html += '<tr>';
+      html += '<td style="white-space:nowrap;font-weight:700">' + fmtPayMonth(r.month) + '</td>';
+      html += '<td style="white-space:nowrap">' + fmtDate(r.date) + '</td>';
+      html += '<td>' + r.loanLabel + '</td>';
+      html += '<td>&#8377;' + r.baseEMI.toLocaleString() + '</td>';
+      html += '<td class="' + prevBalCls + '">' + prevBalTxt + '</td>';
+      html += '<td class="amber">&#8377;' + Math.round(r.totalDue).toLocaleString() + '</td>';
+      html += '<td class="green">&#8377;' + r.paid.toLocaleString() + '</td>';
+      html += '<td class="' + (r.bankCharge ? 'red' : '') + '">' + (r.bankCharge ? '&#8377;' + r.bankCharge : '--') + '</td>';
+      html += '<td class="' + (r.penalty ? 'red' : '') + '">' + (r.penalty ? '&#8377;' + r.penalty : '--') + '</td>';
+      html += '<td><span class="tag ' + statusBg + '">' + statusIcon + ' ' + r.status + ' ' + creditTxt + '</span></td>';
+      html += '<td>' + carryTxt + '</td>';
+      html += '<td>' + (r.paymentMode || '') + '</td>';
+      html += '<td><div style="display:flex;gap:4px">';
+      html += '<button class="btn btn-sm emi-edit-btn" style="background:#fef3c7;color:#92400e;padding:4px 8px" data-id="' + r.id + '" title="Edit">&#9999;&#65039;</button>';
+      html += '<button class="btn btn-sm btn-danger emi-del-btn" style="padding:4px 8px" data-id="' + r.id + '" title="Delete">&#128465;</button>';
+      html += '</div></td>';
+      html += '</tr>';
+    });
+    return html;
+  })();
+
+}
+
+// ============================================================
+// LOAN CALCULATOR — CA-GRADE AMORTIZATION
+// ============================================================
+let amortVisible = false;
+let lastAmortData = [];
+
+function calcLoanPreview() {
+  const P = parseFloat(document.getElementById('l-amount')?.value)||0;
+  const rateAnnual = parseFloat(document.getElementById('l-rate')?.value)||0;
+  const n_emi = parseInt(document.getElementById('l-total')?.value)||0;
+  let emiInput = parseFloat(document.getElementById('l-emi')?.value)||0;
+  const startDate = document.getElementById('l-start')?.value||'';
+
+  if (!P || !n_emi) { document.getElementById('loan-preview').style.display='none'; return; }
+
+  let emi = emiInput;
+  let rMonthly = 0;
+  let emiIsAutoCalc = false;
+
+  if (rateAnnual > 0) {
+    rMonthly = rateAnnual / 12 / 100;
+    // Reducing Balance Method: EMI = P × R × (1+R)^N / ((1+R)^N - 1)
+    const factor = Math.pow(1 + rMonthly, n_emi);
+    const calcEMI = Math.ceil(P * rMonthly * factor / (factor - 1)); // ceil to match bank rounding
+    if (!emiInput) {
+      emi = calcEMI;
+      set('l-emi', emi);
+      emiIsAutoCalc = true;
+    }
+  }
+
+  if (!emi) { document.getElementById('loan-preview').style.display='none'; return; }
+
+  // Use actual EMI × N for total payable (matches bank agreement)
+  const totalPayable = emi * n_emi;
+  const totalInterest = totalPayable - P;
+  const interestPct = ((totalInterest / P) * 100).toFixed(1);
+
+  // Build amortization using REDUCING BALANCE method
+  // Use actual EMI (user entered or calc) for schedule
+  lastAmortData = [];
+  let balance = P;
+  let startD = startDate ? new Date(startDate) : null;
+
+  for (let i = 1; i <= n_emi; i++) {
+    // Interest on outstanding balance
+    const interestPart = rMonthly > 0 ? Math.round(balance * rMonthly) : Math.round(totalInterest / n_emi);
+    // Principal = EMI - Interest (last EMI adjusted for any residual)
+    let principalPart = emi - interestPart;
+    if (i === n_emi) principalPart = balance; // final EMI clears balance
+    balance = Math.max(0, balance - principalPart);
+
+    let monthLabel = '';
+    if (startD) {
+      const d = new Date(startD);
+      d.setMonth(d.getMonth() + i);  // first EMI is month after start
+      monthLabel = d.toLocaleString('default',{month:'short',year:'numeric'});
+    } else {
+      monthLabel = 'Month ' + i;
+    }
+    lastAmortData.push({ emi_no: i, month: monthLabel, emi, principal: principalPart, interest: interestPart, balance });
+  }
+
+  const firstInterest = lastAmortData[0]?.interest || 0;
+  const lastInterest = lastAmortData[n_emi-1]?.interest || 0;
+
+  // Show preview card
+  document.getElementById('loan-preview').style.display = '';
+  document.getElementById('loan-preview-stats').innerHTML = [
+    ['Principal (Loan)', '₹'+P.toLocaleString()],
+    ['Total Interest ('+rateAnnual+'%)', '₹'+Math.round(totalInterest).toLocaleString()],
+    ['Total Payable (P+I)', '₹'+totalPayable.toLocaleString()],
+    ['EMI / Month', '₹'+emi.toLocaleString() + (emiIsAutoCalc?' (auto)':'')],
+  ].map(([l,v])=>`<div style="background:rgba(255,255,255,0.15);border-radius:8px;padding:10px;text-align:center">
+    <div style="font-size:10px;opacity:0.8;margin-bottom:4px">${l}</div>
+    <div style="font-size:15px;font-weight:800">${v}</div>
+  </div>`).join('');
+
+  document.getElementById('loan-preview-note').innerHTML =
+    `📌 Reducing Balance Method &nbsp;|&nbsp; ` +
+    `Interest = ₹${Math.round(totalInterest).toLocaleString()} (${interestPct}% of principal) &nbsp;|&nbsp; ` +
+    `EMI 1 interest: ₹${firstInterest.toLocaleString()} | EMI ${n_emi} interest: ₹${lastInterest.toLocaleString()}` +
+    (emiIsAutoCalc 
+      ? ` &nbsp;|&nbsp; <span style="color:#fde68a">⚠️ Bank ke exact EMI se thoda difference ho sakta hai (moratorium/rounding). Bank ka EMI manually type karein upar.</span>`
+      : ` &nbsp;|&nbsp; <span style="color:#bbf7d0">✅ Bank ka actual EMI use ho raha hai</span>`);
+
+  document.getElementById('amort-toggle-btn').style.display = '';
+  if (amortVisible) renderAmortTable();
+}
+
+function renderAmortTable() {
+  if (!lastAmortData.length) return;
+  document.getElementById('amort-body').innerHTML = lastAmortData.map((r,i) => `<tr style="background:${i%2===0?'#f9fafb':'white'}">
+    <td style="padding:6px 10px;color:#6b7280">${r.emi_no}</td>
+    <td style="padding:6px 10px;font-weight:600">${r.month}</td>
+    <td style="padding:6px 10px;text-align:right">₹${r.emi.toLocaleString()}</td>
+    <td style="padding:6px 10px;text-align:right;color:#10b981">₹${r.principal.toLocaleString()}</td>
+    <td style="padding:6px 10px;text-align:right;color:#ef4444">₹${r.interest.toLocaleString()}</td>
+    <td style="padding:6px 10px;text-align:right;color:#4f46e5;font-weight:700">₹${r.balance.toLocaleString()}</td>
+  </tr>`).join('');
+}
+
+function toggleAmort() {
+  amortVisible = !amortVisible;
+  const sec = document.getElementById('amort-section');
+  const btn = document.getElementById('amort-toggle-btn');
+  if (amortVisible) {
+    renderAmortTable();
+    sec.style.display = '';
+    btn.textContent = '▲ Hide Amortization';
+  } else {
+    sec.style.display = 'none';
+    btn.textContent = '📅 Show Amortization';
+  }
+}
+
+function quickPayEMI(loanId) {
+  const loanSel = document.getElementById('ep-loan');
+  if (loanSel) { loanSel.value = loanId; updateEMIPaymentDetails(); }
+  // Scroll to form
+  document.getElementById('ep-loan')?.scrollIntoView({ behavior:'smooth', block:'center' });
+}
+
+// Event delegation for EMI Payment Record buttons (avoids inline onclick quote issues)
+document.addEventListener('click', function(e) {
+  const editBtn = e.target.closest('.emi-edit-btn');
+  const delBtn  = e.target.closest('.emi-del-btn');
+  if (editBtn) { editEmiPayment(editBtn.dataset.id); }
+  if (delBtn)  { deleteEmiPayment(delBtn.dataset.id); }
+});
+
+// Edit EMI Payment — load into form
+function editEmiPayment(payId) {
+  const pay = DB.emiPayments.find(p => p.id === payId);
+  if (!pay) return;
+
+  // Set loan select
+  set('ep-loan', pay.loan_id || pay.loanid || '');
+  // Set payment month (handle ISO date or YYYY-MM)
+  const pm = pay.payment_month || pay.paymentmonth || '';
+  set('ep-month', pm.includes('T') ? parseToISO(pm).slice(0,7) : pm);
+  // Set payment date
+  set('ep-date', parseToISO(pay.payment_date || pay.paymentdate || ''));
+  // Set amount
+  set('ep-amount', pay.amount_paid || pay.amountpaid || '');
+  // Set mode
+  set('ep-mode', pay.payment_mode || pay.paymentmode || '');
+  // Set notes
+  set('ep-notes', pay.notes || '');
+  // Set image
+  if (pay.image) {
+    const pr = document.getElementById('ep-img-prev');
+    if (pr) { pr.src = pay.image; pr.style.display = 'inline-block'; }
+    set('ep-img-data', pay.image);
+  }
+  // Store edit id
+  set('ep-edit-id', payId);
+
+  // Show cancel button
+  const cancelBtn = document.getElementById('ep-cancel-btn');
+  if (cancelBtn) cancelBtn.style.display = '';
+
+  // Update button text
+  const btn = document.querySelector('[onclick="saveEmiPayment()"]');
+  if (btn) { btn.textContent = '💾 Update EMI Payment'; btn.style.background = '#f59e0b'; }
+
+  // Show details
+  updateEMIPaymentDetails();
+
+  // Scroll to form
+  document.getElementById('ep-loan')?.scrollIntoView({ behavior:'smooth', block:'start' });
+  showToast('EMI record load hua — edit karke Update karein', 'ok');
+}
+
+// Delete EMI Payment
+async function deleteEmiPayment(payId) {
+  if (!confirm('Yeh EMI payment record delete karna chahte hain?\n\nDhyan rein: Carry forward recalculate ho jayega.')) return;
+  await apiCall('delete', { sheet:'emiPayments', id: payId });
+  showToast('EMI payment delete ho gayi!', 'ok');
+  await loadAll();
+}
+
+</script>
+
+<script>
+// ============================================================
+// PWA - Inline Service Worker (works on ANY hosting, no sw.js needed)
+// ============================================================
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    const host = location.hostname;
+    const skip = host.includes('claudeusercontent') || host.includes('anthropic');
+    if (!skip) {
+      try {
+        const swCode = `// ============================================================
+// Transport Manager - Service Worker (PWA Offline Support)
+// ============================================================
+const CACHE_NAME = 'transport-manager-v1';
+const OFFLINE_ASSETS = [
+  './transport_manager.html',
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png'
+];
+
+// Install — cache all files
+self.addEventListener('install', event => {
+  console.log('[SW] Installing...');
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache => {
+      console.log('[SW] Caching app files');
+      return cache.addAll(OFFLINE_ASSETS);
+    }).then(() => self.skipWaiting())
+  );
+});
+
+// Activate — clean old caches
+self.addEventListener('activate', event => {
+  console.log('[SW] Activating...');
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(
+        keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
+      )
+    ).then(() => self.clients.claim())
+  );
+});
+
+// Fetch — serve from cache, fallback to network
+self.addEventListener('fetch', event => {
+  const url = event.request.url;
+  
+  // Google Apps Script API calls — always use network (real-time data)
+  if (url.includes('script.google.com')) {
+    event.respondWith(
+      fetch(event.request).catch(() => {
+        return new Response(JSON.stringify({
+          success: false,
+          error: 'Offline — internet connection nahi hai. Data sync hoga jab connection aayega.'
+        }), { headers: { 'Content-Type': 'application/json' } });
+      })
+    );
+    return;
+  }
+
+  // App files — cache first, then network
+  event.respondWith(
+    caches.match(event.request).then(cached => {
+      if (cached) return cached;
+      return fetch(event.request).then(response => {
+        // Cache new responses
+        if (response && response.status === 200) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+        }
+        return response;
+      }).catch(() => {
+        // If network fails and no cache, return offline page
+        return caches.match('./transport_manager.html');
+      });
+    })
+  );
+});
+`;
+        const blob = new Blob([swCode], {type: 'application/javascript'});
+        const swUrl = URL.createObjectURL(blob);
+        navigator.serviceWorker.register(swUrl)
+          .then(reg => console.log('[PWA] Service Worker ready ✅'))
+          .catch(() => {});
+      } catch(e) {}
+    }
+  });
+}
+
+// PWA Install Prompt
+let deferredPrompt;
+const installBanner = document.getElementById('pwa-install-banner');
+const installBtn = document.getElementById('pwa-install-btn');
+const installDismiss = document.getElementById('pwa-install-dismiss');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (installBanner) installBanner.style.display = 'flex';
+});
+
+if (installBtn) {
+  installBtn.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      showToast('App install ho rahi hai! 🎉', 'ok');
+    }
+    deferredPrompt = null;
+    if (installBanner) installBanner.style.display = 'none';
+  });
+}
+
+if (installDismiss) {
+  installDismiss.addEventListener('click', () => {
+    if (installBanner) installBanner.style.display = 'none';
+  });
+}
+
+// Show installed status
+window.addEventListener('appinstalled', () => {
+  showToast('Transport Manager install ho gaya! ✅', 'ok');
+  if (installBanner) installBanner.style.display = 'none';
+});
+
+// Online/Offline status
+window.addEventListener('online', () => showToast('Internet connected ✅', 'ok'));
+window.addEventListener('offline', () => showToast('Offline — Local data available', ''));
+</script>
+</body>
+</html>
